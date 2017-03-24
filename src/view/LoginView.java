@@ -81,13 +81,13 @@ public class LoginView extends Application {
         primaryStage.setHeight(primaryScreenBounds.getHeight());
 
         scene.getStylesheets().add
-                (LoginView.class.getResource("LoginView.css").toExternalForm());
+                (LoginView.class.getResource("ressources/css/LoginView.css").toExternalForm());
         primaryStage.show();
 
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+       public static void main(String[] args) {
+           launch(args);
+       }
 
 }

@@ -19,11 +19,15 @@ public class UserList extends Observable {
     }
 
     public void add(int index, MessageUser user){
-        users.add(index, user);
-        usernames.add(index, user.getPseudo());
+        users.add(user);
+        // users.add(index, user);
+        usernames.add(user.getPseudo());
+        // usernames.add(index, user.getPseudo());
         setChanged();
         notifyObservers();
     }
+
+
 
     public void remove(int index, MessageUser user){
         users.remove(index);

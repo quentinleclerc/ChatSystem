@@ -7,8 +7,10 @@ import java.io.*;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.Observable;
+import java.util.Observer;
 
-public class MulticastClientThread implements Runnable {
+public class MulticastClientThread implements Runnable, Observer  {
 
     // multicast group adress where the message is received
     private InetAddress INET_ADDR;
@@ -46,6 +48,11 @@ public class MulticastClientThread implements Runnable {
 
     }
 
+    private void addUser(MessageUser userReceived) {
+        users = UserList.getInstance();
+        users.add(userReceived);
+    }
+
     private MessageUser recvUser() {
         MessageUser UserReceived = null;
         try {
@@ -60,6 +67,9 @@ public class MulticastClientThread implements Runnable {
 
             UserReceived = (MessageUser) ois.readObject();
 
+            // Adding the received user to the UserList
+            addUser(UserReceived);
+
             ois.close();
         }
         catch (Exception e) {
@@ -69,4 +79,8 @@ public class MulticastClientThread implements Runnable {
         return UserReceived;
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        System.out.println("User added");
+    }
 }

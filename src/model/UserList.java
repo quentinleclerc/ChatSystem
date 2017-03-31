@@ -13,16 +13,30 @@ public class UserList extends Observable {
 
     private ObservableList<String> obsUsersList;
 
-    public UserList() {
-        obsUsersList = FXCollections.observableList(usernames);
+    private static UserList INSTANCE = new UserList();
 
+    private UserList() {
+        obsUsersList = FXCollections.observableList(usernames);
+    }
+
+    public static synchronized UserList getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new UserList();
+        }
+
+        return INSTANCE;
     }
 
     public void add(int index, MessageUser user){
+        users.add(index, user);
+        usernames.add(index, user.getPseudo());
+        setChanged();
+        notifyObservers();
+    }
+
+    public void add(MessageUser user) {
         users.add(user);
-        // users.add(index, user);
         usernames.add(user.getPseudo());
-        // usernames.add(index, user.getPseudo());
         setChanged();
         notifyObservers();
     }

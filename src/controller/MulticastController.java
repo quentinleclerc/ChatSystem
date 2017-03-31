@@ -14,6 +14,7 @@ public class MulticastController implements Runnable {
     private static final int SLEEP_TIME = 5000;
 
     public MulticastController() {
+        super();
         System.out.println("MulticastController started..");
     }
 

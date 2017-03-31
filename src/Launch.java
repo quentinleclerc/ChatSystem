@@ -9,6 +9,7 @@ public class Launch {
         // Avoid the join error when using on Mac
         System.setProperty("java.net.preferIPv4Stack", "true");
 
+
         Thread tController = new Thread(new MulticastController());
         tController.start();
 

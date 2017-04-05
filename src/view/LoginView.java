@@ -58,8 +58,8 @@ public class LoginView extends Application {
         final Text actiontarget = new Text();
         grid.add(actiontarget, 0, 6);
         actiontarget.setId("actiontarget");
-        grid.setColumnSpan(actiontarget, 2);
-        grid.setHalignment(actiontarget, RIGHT);
+        GridPane.setColumnSpan(actiontarget, 2);
+        GridPane.setHalignment(actiontarget, RIGHT);
         actiontarget.setId("actiontarget");
 
         btn.setOnAction(new EventHandler<ActionEvent>() {

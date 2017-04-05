@@ -12,11 +12,19 @@ public class CommunicationController implements Initializable, ControlledScreen{
 
     @Override
     public void setScreenParent(ViewsController screenParent) {
-        myController = screenParent;
+        setMyController(screenParent);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
+
+	public ViewsController getMyController() {
+		return myController;
+	}
+
+	public void setMyController(ViewsController myController) {
+		this.myController = myController;
+	}
 }

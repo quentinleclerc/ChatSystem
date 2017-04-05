@@ -20,7 +20,11 @@ public class MulticastController implements Runnable {
         System.out.println("MulticastController started..");
     }
 
-    public void run() {
+    public static String getAdr() {
+		return ADR;
+	}
+
+	public void run() {
         MessageUser myUser = null;
         try {
             myUser = new MessageUser("Quentin", InetAddress.getByName("127.0.0.1"), 8080, MessageUser.typeConnect.CONNECTED);

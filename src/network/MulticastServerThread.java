@@ -48,8 +48,6 @@ public class MulticastServerThread implements Runnable {
                 byte[] sendBuf = byteStream.toByteArray();
                 DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, INET_ADDR, PORT);
 
-                int byteCount = packet.getLength();
-
                 socket.send(packet);
                 System.out.println("Sent a message to group "+ INET_ADDR + " : " + myUser);
 

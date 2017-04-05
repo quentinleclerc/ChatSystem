@@ -9,12 +9,12 @@ import javafx.stage.Stage;
 public class MainView extends Application {
 
     public static String screen1ID = "LoginView";
-    public static String screen1File  = "../../resources/fxml/LogInView.fxml";
+    public static String screen1File  = "/fxml/LogInView.fxml";
     public static String screen2ID = "CommunicationView";
-    public static String screen2File  = "../../resources/fxml/CommunicationView.fxml";
+    public static String screen2File  = "/fxml/CommunicationView.fxml";
     private static Stage primaryStage;
 
-
+    
     @Override
     public void start(Stage primaryStage) {
 

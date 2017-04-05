@@ -31,6 +31,11 @@ import java.net.InetAddress;
  */
 public class MessageUser implements Serializable {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Le pseudo du user
 	 */
 	private  String pseudo;

@@ -24,11 +24,19 @@ public class MulticastClientThread implements Runnable, Observer  {
 
     public MulticastClientThread(String adr, int port) throws IOException {
         this.INET_ADDR = InetAddress.getByName(adr);
-        this.PORT = port;
+        this.setPORT(port);
         this.socket = new MulticastSocket(port);
     }
 
-    public void run() {
+    public int getPORT() {
+		return PORT;
+	}
+
+	public void setPORT(int pORT) {
+		PORT = pORT;
+	}
+
+	public void run() {
         MessageUser userReceived;
 
         System.out.println("MulticastClient socket running at : "+ socket.getLocalSocketAddress());

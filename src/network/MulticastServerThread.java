@@ -1,4 +1,4 @@
-package controller;
+package network;
 
 import model.MessageUser;
 import java.io.*;

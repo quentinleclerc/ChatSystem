@@ -1,6 +1,8 @@
 package controller;
 
 import model.MessageUser;
+import network.MulticastClientThread;
+import network.MulticastServerThread;
 
 import java.net.InetAddress;
 

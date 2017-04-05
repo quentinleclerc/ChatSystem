@@ -80,8 +80,9 @@ public class LoginView extends Application {
         primaryStage.setWidth(primaryScreenBounds.getWidth());
         primaryStage.setHeight(primaryScreenBounds.getHeight());
 
-        scene.getStylesheets().add
-                (LoginView.class.getResource("ressources/css/LoginView.css").toExternalForm());
+        //scene.getStylesheets().add("resources/css/LoginView.css");
+        //scene.getStylesheets().add(LoginView.class.getResource("css/LoginView.css");
+        scene.getStylesheets().add(this.getClass().getResource("/css/LoginView.css").toExternalForm());
         primaryStage.show();
 
     }

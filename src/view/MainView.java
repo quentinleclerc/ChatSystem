@@ -7,11 +7,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainView extends Application {
-
+	/**
+	 * Be careful, depending on the IDE you have to use the relative
+	 * or absolute path. Don't forget to add the resources folder
+	 * to your java build path
+	 */
     public static String screen1ID = "LoginView";
     public static String screen1File  = "/fxml/LogInView.fxml";
     public static String screen2ID = "CommunicationView";
     public static String screen2File  = "/fxml/CommunicationView.fxml";
+    
     private static Stage primaryStage;
 
     

@@ -24,14 +24,15 @@ public class LogInController implements Initializable, ControlledScreen {
     public void initialize(URL location, ResourceBundle rb) {
         actiontarget.setText("");
     }
+    
+    @Override
+    public void setScreenParent(ViewsController screenParent){
+        myController = screenParent;
+    }
 
     @FXML
     void onSignIn(ActionEvent event) {
         myController.setScreen(MainView.screen2ID);
-    }
-
-    public void setScreenParent(ViewsController screenParent){
-        myController = screenParent;
     }
 
 }

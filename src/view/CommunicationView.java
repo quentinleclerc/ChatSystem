@@ -21,7 +21,6 @@ public class CommunicationView extends Application implements Observer {
     private void init(Stage primaryStage) {
 
         users = UserList.getInstance();
-        users.addObserver(this);
 
         Group root = new Group();
         primaryStage.setScene(new Scene(root));

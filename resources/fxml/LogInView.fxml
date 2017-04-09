@@ -7,40 +7,49 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane alignment="center" hgap="10" styleClass="root" stylesheets="@/css/LoginView.css" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controller.LogInController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@/css/LoginView.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogInController">
     <padding><Insets bottom="25" left="25" right="25" top="25" /></padding>
    <children>
        
-       <Text id="welcome-text" text="Welcome" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
+       <Text id="welcome-text" text="Welcome to CHAT SYSTEM" wrappingWidth="537.701171875" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+         <font>
+            <Font size="18.0" />
+         </font></Text>
     
-       <Label text="User Name:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="User Name:" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
     
-       <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+       <TextField prefHeight="48.0" prefWidth="338.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
     
-       <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="Password:" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
     
-       <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+       <PasswordField fx:id="passwordField" prefHeight="48.0" prefWidth="338.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
            
-       <HBox alignment="bottom_right" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
+       <HBox alignment="bottom_right" prefHeight="219.0" prefWidth="355.0" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
               <children>
-              <Button onAction="#onSignIn" text="Sign In" />
+              <Button onAction="#onSignIn" prefHeight="43.0" prefWidth="105.0" text="Sign In" />
               </children>
        </HBox>
    
        <Text fx:id="actiontarget" GridPane.columnIndex="1" GridPane.rowIndex="6" />
    </children>
    <columnConstraints>
-      <ColumnConstraints />
-      <ColumnConstraints />
+      <ColumnConstraints maxWidth="230.0" minWidth="62.0" prefWidth="210.0" />
+      <ColumnConstraints maxWidth="488.0" minWidth="320.0" prefWidth="340.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
+      <RowConstraints maxHeight="60.0" minHeight="0.0" prefHeight="60.0" />
+      <RowConstraints maxHeight="96.0" minHeight="25.0" prefHeight="95.0" />
+      <RowConstraints maxHeight="128.0" minHeight="35.0" prefHeight="83.0" />
+      <RowConstraints maxHeight="94.0" minHeight="4.0" prefHeight="37.0" />
+      <RowConstraints maxHeight="215.0" minHeight="60.0" prefHeight="60.0" />
+      <RowConstraints maxHeight="16.0" minHeight="5.0" prefHeight="15.0" />
+      <RowConstraints maxHeight="11.0" minHeight="0.0" prefHeight="0.0" />
    </rowConstraints>
 
 </GridPane>

@@ -10,14 +10,12 @@ import javafx.scene.text.Text;
 import view.MainView;
 
 public class LogInController implements Initializable, ControlledScreen {
-
+	
+    private ViewsController myController;
     @FXML
     private Text actiontarget;
-
     @FXML
     private PasswordField passwordField;
-
-    private ViewsController myController;
 
 
     @Override

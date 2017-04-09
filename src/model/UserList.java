@@ -2,52 +2,75 @@ package model;
 
 
 import java.util.*;
+
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class UserList extends Observable {
+public class UserList {
 
     private ArrayList<String> usernames = new ArrayList<>();
 
     private ArrayList<MessageUser> users = new ArrayList<>();
 
-    private ObservableList<String> obsUsersList;
-
-    private static UserList INSTANCE = new UserList();
-
+    private final ObservableList<String> obsUsersList;
+    
+    private final ObjectProperty<String> currentUser = new SimpleObjectProperty<>(null);
+    
+    private static UserList INSTANCE = null;
+    
     private UserList() {
-        obsUsersList = FXCollections.observableList(usernames);
+        obsUsersList = FXCollections.observableArrayList(usernames);
     }
-
-    public static synchronized UserList getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new UserList();
-        }
-
-        return INSTANCE;
+    
+    public static UserList getInstance(){
+    	if(INSTANCE == null){
+    		INSTANCE = new UserList();
+    	}
+    		return INSTANCE;
     }
 
     public void add(int index, MessageUser user){
         users.add(index, user);
         usernames.add(index, user.getPseudo());
-        setChanged();
-        notifyObservers();
+        obsUsersList.add(index, user.getPseudo());
     }
 
     public void add(MessageUser user) {
         users.add(user);
         usernames.add(user.getPseudo());
-        setChanged();
-        notifyObservers();
+        obsUsersList.add(user.getPseudo());
     }
 
-
-
-    public void remove(int index, MessageUser user){
+    public void remove(int index){
         users.remove(index);
         usernames.remove(index);
-        setChanged();
-        notifyObservers();
+        obsUsersList.remove(index);
+    }
+    
+    public void remove(MessageUser user){
+        users.remove(user);
+        usernames.remove(user.getPseudo());
+        obsUsersList.remove(user.getPseudo());
+    }
+    
+    public void clearAll(){
+    	users.clear();
+    	usernames.clear();
+    	obsUsersList.clear();
+    }
+    
+    public ObjectProperty<String> currentUserProperty() {
+        return currentUser ;
+    }
+
+    public final String getCurrentUser() {
+        return currentUserProperty().get();
+    }
+
+    public final void setCurrentUser(String user) {
+        currentUserProperty().set(user);
     }
 
     public ObservableList<String> getObsUsersList() {

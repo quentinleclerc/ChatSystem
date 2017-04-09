@@ -28,14 +28,13 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <ScrollBar orientation="VERTICAL" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
       <Text fill="#1841a8" strokeType="OUTSIDE" strokeWidth="0.0" text="LET'S CHAT" textAlignment="CENTER" wrappingWidth="325.21875" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font size="25.0" />
          </font>
       </Text>
       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-      <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="286.0" text="Disconnect" textFill="#e37b7b" GridPane.columnIndex="1">
+      <Button fx:id="disconnect" onAction="#onDisconnect" mnemonicParsing="false" prefHeight="27.0" prefWidth="286.0" text="Disconnect" textFill="#e37b7b" GridPane.columnIndex="1">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font></Button>
@@ -43,15 +42,15 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="312.0">
                <children>
-                  <TextArea layoutX="-1.0" mouseTransparent="true" pickOnBounds="false" prefHeight="246.0" prefWidth="347.0" />
+                  <TextArea fx:id="discussion" layoutX="-1.0" mouseTransparent="true" pickOnBounds="false" prefHeight="246.0" prefWidth="347.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
                   <ToolBar prefHeight="39.0" prefWidth="345.0">
                      <items>
-                        <TextField prefHeight="27.0" prefWidth="214.0" GridPane.rowIndex="2" />
-                        <Button mnemonicParsing="false" text="Send" />
+                        <TextField fx:id="messageToSend" prefHeight="27.0" prefWidth="214.0" GridPane.rowIndex="2" />
+                        <Button fx:id="send" mnemonicParsing="false" text="Send" />
                      </items>
                   </ToolBar>
                </children>
@@ -59,6 +58,6 @@
         </items>
       </SplitPane>
       <AmbientLight color="CHARTREUSE" lightOn="true" GridPane.rowIndex="2" />
-      <TextField mouseTransparent="true" pickOnBounds="false" prefHeight="51.0" prefWidth="347.0" promptText="Select a recipient ..." GridPane.rowIndex="2" />
+      <TextField fx:id="recipientField" mouseTransparent="true" pickOnBounds="false" prefHeight="51.0" prefWidth="347.0" promptText="Select a recipient ..." GridPane.rowIndex="2" />
    </children>
 </GridPane>

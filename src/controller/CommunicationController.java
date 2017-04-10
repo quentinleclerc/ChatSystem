@@ -32,7 +32,9 @@ public class CommunicationController implements Initializable, ControlledScreen,
 	TextArea discussion;
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {    
+	public void initialize(URL location, ResourceBundle resources) {
+		model = UserList.getInstance();
+		initModel();
 	}
 
 	@Override
@@ -40,13 +42,8 @@ public class CommunicationController implements Initializable, ControlledScreen,
 		setMyController(screenParent);
 	}
 	
-	public void initModel(UserList model) {
-        // ensure model is only set once:
-        if (this.model != null) {
-            throw new IllegalStateException("Model can only be initialized once");
-        }
+	public void initModel() {
 
-        this.model = model ;
         listView.setItems(model.getObsUsersList());
         listView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> 
             model.setCurrentUser(newSelection));

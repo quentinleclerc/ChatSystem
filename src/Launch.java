@@ -1,5 +1,6 @@
 import controller.MulticastController;
 import view.CommunicationView;
+import view.MainView;
 
 public class Launch {
 
@@ -13,7 +14,7 @@ public class Launch {
         Thread tController = new Thread(new MulticastController());
         tController.start();
 
-        CommunicationView.main(null);
+        MainView.main(null);
 
 
 

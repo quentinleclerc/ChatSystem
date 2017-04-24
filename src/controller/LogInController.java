@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import view.MainView;
 
@@ -16,6 +17,8 @@ public class LogInController implements Initializable, ControlledScreen {
     private Text actiontarget;
     @FXML
     private PasswordField passwordField;
+    @FXML
+    private TextField username;
 
 
     @Override
@@ -31,6 +34,7 @@ public class LogInController implements Initializable, ControlledScreen {
     @FXML
     void onSignIn(ActionEvent event) {
         myController.setScreen(MainView.screen2ID);
+        MulticastController.startAll(username.getText());
     }
 
 }

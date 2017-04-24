@@ -21,7 +21,7 @@
             <Font size="14.0" />
          </font></Label>
     
-       <TextField prefHeight="48.0" prefWidth="338.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+       <TextField fx:id="username" prefHeight="48.0" prefWidth="338.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
     
        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="Password:" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2">
          <font>

@@ -3,6 +3,7 @@ package model;
 
 import java.util.*;
 
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -24,7 +25,7 @@ public class UserList {
         obsUsersList = FXCollections.observableArrayList(usernames);
     }
     
-    public static UserList getInstance(){
+    public synchronized static UserList getInstance(){
     	if(INSTANCE == null){
     		INSTANCE = new UserList();
     	}
@@ -32,35 +33,47 @@ public class UserList {
     }
 
     public void add(int index, MessageUser user){
-        users.add(index, user);
-        usernames.add(index, user.getPseudo());
-        obsUsersList.add(index, user.getPseudo());
+        synchronized (this) {
+            users.add(index, user);
+            usernames.add(index, user.getPseudo());
+            obsUsersList.add(index, user.getPseudo());
+        }
     }
 
     public void add(MessageUser user) {
-        users.add(user);
-        usernames.add(user.getPseudo());
-        obsUsersList.add(user.getPseudo());
+        synchronized (this) {
+            users.add(user);
+            usernames.add(user.getPseudo());
+            obsUsersList.add(user.getPseudo());
+        }
     }
 
-    public void remove(int index){
+    public synchronized void remove(int index){
         users.remove(index);
         usernames.remove(index);
         obsUsersList.remove(index);
     }
     
-    public void remove(MessageUser user){
+    public synchronized void remove(MessageUser user){
         users.remove(user);
         usernames.remove(user.getPseudo());
         obsUsersList.remove(user.getPseudo());
     }
     
-    public void clearAll(){
+    public synchronized void clearAll(){
     	users.clear();
     	usernames.clear();
     	obsUsersList.clear();
     }
-    
+
+    public int indexOf(MessageUser user) {
+        return usernames.indexOf(user.getPseudo());
+    }
+
+    public boolean contains(MessageUser user) {
+        return usernames.contains(user.getPseudo());
+    }
+
     public ObjectProperty<String> currentUserProperty() {
         return currentUser ;
     }

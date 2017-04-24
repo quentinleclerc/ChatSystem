@@ -19,7 +19,7 @@
       <RowConstraints maxHeight="347.0" minHeight="10.0" prefHeight="304.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ListView fx:id="listView" prefHeight="0.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <ListView fx:id="listView" onMouseClicked="#onMouseClicked" prefHeight="0.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Text fill="#2916d7" strokeType="OUTSIDE" strokeWidth="0.0" text="Connected Users" textAlignment="CENTER" wrappingWidth="232.00341796875" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets />
@@ -28,16 +28,19 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <Text fill="#1841a8" strokeType="OUTSIDE" strokeWidth="0.0" text="LET'S CHAT" textAlignment="CENTER" wrappingWidth="325.21875" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Text fill="#1841a8" strokeType="OUTSIDE" strokeWidth="0.0" text="LET'S CHAT" textAlignment="CENTER" wrappingWidth="337.21875" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font size="25.0" />
          </font>
       </Text>
       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-      <Button fx:id="disconnect" onAction="#onDisconnect" mnemonicParsing="false" prefHeight="27.0" prefWidth="286.0" text="Disconnect" textFill="#e37b7b" GridPane.columnIndex="1">
+      <Button fx:id="disconnect" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onDisconnect" prefHeight="28.0" prefWidth="238.0" text="Disconnect" textFill="#e37b7b" GridPane.columnIndex="1">
          <font>
             <Font name="System Bold Italic" size="14.0" />
-         </font></Button>
+         </font>
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </GridPane.margin></Button>
       <SplitPane dividerPositions="0.8503401360544217" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.rowIndex="3">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="312.0">

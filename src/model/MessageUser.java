@@ -87,37 +87,33 @@ public class MessageUser implements Serializable {
 		this.etat=etat;
 	}
 
-	
 	public String getPseudo() {
 		return this.pseudo;
 	}
-
 
 	public InetAddress getIP() {
 		return IP;
 	}
 
-
-
 	public int getPort() {
 		return port;
 	}
-
 
 	public typeConnect getEtat() {
 		return etat;
 	}
 
-
 	public String getStatut() {
 		return statut;
 	}
-
 
 	public void setStatut(String statut) {
 		this.statut = statut;
 	}
 
+	public void setEtat(typeConnect etat) {
+		this.etat = etat;
+	}
 
 }
 

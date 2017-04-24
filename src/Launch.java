@@ -1,5 +1,9 @@
+import controller.CommunicationController;
+import controller.LogInController;
 import controller.MulticastController;
-import view.CommunicationView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import sun.applet.Main;
 import view.MainView;
 
 public class Launch {
@@ -11,12 +15,13 @@ public class Launch {
         System.setProperty("java.net.preferIPv4Stack", "true");
 
 
-        Thread tController = new Thread(new MulticastController());
-        tController.start();
+        MulticastController multiController = new MulticastController();
 
-        MainView.main(null);
-
-
+        (new Thread(){
+            public void run(){
+                MainView.launch((MainView.class));
+            }
+        }).start();
 
     }
 

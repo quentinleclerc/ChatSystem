@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.scene.input.MouseEvent;
 import model.*;
 import view.MainView;
 import javafx.event.ActionEvent;
@@ -14,10 +15,12 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CommunicationController implements Initializable, ControlledScreen, EventHandler<ActionEvent>{
+public class CommunicationController implements Initializable, ControlledScreen {
 
 	private ViewsController myController;
+
 	protected UserList model;
+
 	@FXML
 	ListView<String> listView;
 	@FXML
@@ -72,21 +75,17 @@ public class CommunicationController implements Initializable, ControlledScreen,
 	public void setModel(UserList model) {
 		this.model = model;
 	}
-	
+
+
 	@FXML
 	void onDisconnect(ActionEvent event){
         myController.setScreen(MainView.screen1ID);
+		MulticastController.stopAll();
     }
-	
-	@Override
-	public void handle(ActionEvent event) {
 
-		if (event.getSource().equals(send)) {
-			/**Encapsuler le message du TextField messageToSend
-			 * pour l'envoyer à travers un socket au destinataire
-			 * Puis le mettre dans le fil de discussion
-			 * Enfin effacer le contenu du TextField messageToSend
-			 */
-		}
+	@FXML
+	void onMouseClicked(MouseEvent event) {
+		System.out.println(listView.getSelectionModel().getSelectedItem());
 	}
+
 }

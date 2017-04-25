@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CommunicationController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CommunicationController" >
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0069580078125" minWidth="10.0" prefWidth="347.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="291.0" minWidth="10.0" prefWidth="253.0" />
@@ -53,7 +53,7 @@
                   <ToolBar prefHeight="39.0" prefWidth="345.0">
                      <items>
                         <TextField fx:id="messageToSend" prefHeight="27.0" prefWidth="214.0" GridPane.rowIndex="2" />
-                        <Button fx:id="send" mnemonicParsing="false" text="Send" />
+                        <Button fx:id="send" mnemonicParsing="false" onAction="#onSend" text="Send" />
                      </items>
                   </ToolBar>
                </children>

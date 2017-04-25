@@ -26,7 +26,6 @@ public class ViewsController extends GridPane {
 
     // Add the screen to the collection
     public void addScreen(String name, Node screen) {
-
         screens.put(name, screen);
     }
 

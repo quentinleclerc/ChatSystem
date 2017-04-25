@@ -3,7 +3,6 @@ package model;
 
 import java.util.*;
 
-import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -11,9 +10,9 @@ import javafx.collections.ObservableList;
 
 public class UserList {
 
-    private ArrayList<String> usernames = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
-    private ArrayList<MessageUser> users = new ArrayList<>();
+    private List<String> usernames = new ArrayList<>();
 
     private final ObservableList<String> obsUsersList;
     
@@ -32,7 +31,7 @@ public class UserList {
     		return INSTANCE;
     }
 
-    public void add(int index, MessageUser user){
+    public void add(int index, User user){
         synchronized (this) {
             users.add(index, user);
             usernames.add(index, user.getPseudo());
@@ -40,7 +39,7 @@ public class UserList {
         }
     }
 
-    public void add(MessageUser user) {
+    public void add(User user) {
         synchronized (this) {
             users.add(user);
             usernames.add(user.getPseudo());
@@ -54,7 +53,7 @@ public class UserList {
         obsUsersList.remove(index);
     }
     
-    public synchronized void remove(MessageUser user){
+    public synchronized void remove(User user){
         users.remove(user);
         usernames.remove(user.getPseudo());
         obsUsersList.remove(user.getPseudo());
@@ -66,11 +65,11 @@ public class UserList {
     	obsUsersList.clear();
     }
 
-    public int indexOf(MessageUser user) {
+    public int indexOf(User user) {
         return usernames.indexOf(user.getPseudo());
     }
 
-    public boolean contains(MessageUser user) {
+    public boolean contains(User user) {
         return usernames.contains(user.getPseudo());
     }
 

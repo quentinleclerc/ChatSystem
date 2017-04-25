@@ -18,7 +18,7 @@ public class Launch {
         MulticastController multiController = new MulticastController();
 
         (new Thread(){
-            public void run(){
+            public void run() {
                 MainView.launch((MainView.class));
             }
         }).start();

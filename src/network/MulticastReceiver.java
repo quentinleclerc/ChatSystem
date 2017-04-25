@@ -1,7 +1,7 @@
 package network;
 
 import javafx.application.Platform;
-import model.MessageUser;
+import model.User;
 import model.UserList;
 
 import java.io.*;
@@ -40,7 +40,7 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
     }
 
     public void run() {
-        MessageUser userReceived;
+        User userReceived;
 
         System.out.println("MulticastReceiver socket running at : "+ socket.getLocalSocketAddress());
 
@@ -69,12 +69,12 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
 
     }
 
-    private void treatUser(MessageUser userReceived)  {
+    private void treatUser(User userReceived)  {
         users = UserList.getInstance();
 
-        MessageUser.typeConnect userState = userReceived.getEtat();
+        User.typeConnect userState = userReceived.getEtat();
 
-        if (userState == MessageUser.typeConnect.CONNECTED) {
+        if (userState == User.typeConnect.CONNECTED) {
             if (users.contains(userReceived)) {
                 System.out.println("User already in connected users list");
             }
@@ -105,8 +105,8 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
         }
     }
 
-    private MessageUser recvUser() throws Exception {
-        MessageUser userReceived = null;
+    private User recvUser() throws Exception {
+        User userReceived = null;
 
         byte[] recvBuf = new byte[5000];
         DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
@@ -117,7 +117,7 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
         ByteArrayInputStream byteStream = new ByteArrayInputStream(recvBuf);
         ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(byteStream));
 
-        userReceived = (MessageUser) ois.readObject();
+        userReceived = (User) ois.readObject();
 
         // Adding the received user to the UserList
         treatUser(userReceived);

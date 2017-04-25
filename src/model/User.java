@@ -29,7 +29,7 @@ import java.net.InetAddress;
  * @contact lrodrigu@etud.insa-toulouse.fr
  * @version 1.0.42.2
  */
-public class MessageUser implements Serializable {
+public class User implements Serializable {
 	/**
 	 * 
 	 */
@@ -80,7 +80,7 @@ public class MessageUser implements Serializable {
 	 * @param port Le port d'ecoute du user
 	 * @param etat CONNECTION ou DECONNECTION
 	 */
-	public MessageUser(String pseudo, InetAddress iP, int port, typeConnect etat) {
+	public User(String pseudo, InetAddress iP, int port, typeConnect etat) {
 		this.pseudo = pseudo;
 		this.IP = iP;
 		this.port = port;

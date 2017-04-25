@@ -1,6 +1,6 @@
 package network;
 
-import model.MessageUser;
+import model.User;
 import java.io.*;
 import java.net.*;
 import static java.lang.Thread.sleep;
@@ -17,10 +17,10 @@ public class MulticastSender implements Runnable {
     // local datagram socket use to send
     private DatagramSocket socket;
     // user to be sent
-    private MessageUser myUser;
+    private User myUser;
 
 
-    public MulticastSender(String adr, int port, int time, MessageUser user) throws IOException {
+    public MulticastSender(String adr, int port, int time, User user) throws IOException {
         this.SLEEP_TIME = time;
         this.INET_ADDR = InetAddress.getByName(adr);
         this.PORT = port;
@@ -74,7 +74,7 @@ public class MulticastSender implements Runnable {
     }
 
     private void sendDisconnect() {
-        myUser.setEtat(MessageUser.typeConnect.DECONNECTED);
+        myUser.setEtat(User.typeConnect.DECONNECTED);
         sendUnique();
     }
 

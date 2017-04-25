@@ -1,6 +1,6 @@
 package controller;
 
-import model.MessageUser;
+import model.User;
 import network.MulticastReceiver;
 import network.MulticastSender;
 
@@ -30,7 +30,7 @@ public class MulticastController {
 
 
     public MulticastController() {
-        System.out.println("MulticastController started..");
+        System.out.println("MulticastController initialized.");
     }
 
     public static String getAdr() {
@@ -39,9 +39,9 @@ public class MulticastController {
 
     public static void startAll(String user) {
         username = user;
-        MessageUser myUser = null;
+        User myUser = null;
         try {
-            myUser = new MessageUser(username, InetAddress.getByName("127.0.0.1"), 8080, MessageUser.typeConnect.CONNECTED);
+            myUser = new User(username, InetAddress.getByName("127.0.0.1"), 8080, User.typeConnect.CONNECTED);
 
             System.out.println("Main controller creating a thread for MulticastServer...");
 

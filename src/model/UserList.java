@@ -65,6 +65,10 @@ public class UserList {
     	obsUsersList.clear();
     }
 
+    public User getUserByUsername(String username) {
+        return users.get(usernames.indexOf(username));
+    }
+
     public int indexOf(User user) {
         return usernames.indexOf(user.getPseudo());
     }

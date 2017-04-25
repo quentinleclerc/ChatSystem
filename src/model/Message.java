@@ -7,6 +7,10 @@ public class Message implements Serializable {
 	
 	private String data;
 
+	public Message(String msg) {
+		this.data = msg;
+	}
+
 	public String getData() {
 		return data;
 	}

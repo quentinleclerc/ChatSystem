@@ -54,7 +54,7 @@ public class LogInController implements Initializable, ControlledScreen {
         //myController.setScreen(MainView.screen2ID);
         Stage stage = new Stage();
         stage.setTitle("Communication View");
-        GridPane myPane = null;
+        GridPane myPane;
         FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.screen2File));
         myPane = loader.load();
         Scene scene = new Scene(myPane);
@@ -63,6 +63,7 @@ public class LogInController implements Initializable, ControlledScreen {
         // Get communication controller to set the prevStage
         CommunicationController controller = loader.getController();
         controller.setPrevStage(stage);
+        controller.setListener(new LazyCommunicationControllerListener() );
         /* ***************************************** */
 
 

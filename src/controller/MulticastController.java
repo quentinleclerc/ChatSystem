@@ -39,9 +39,9 @@ public class MulticastController {
 
     public static void startAll(String user) {
         username = user;
-        User myUser = null;
+        User myUser;
         try {
-            myUser = new User(username, InetAddress.getByName("127.0.0.1"), 8080, User.typeConnect.CONNECTED);
+            myUser = new User(username, InetAddress.getByName("127.0.0.1"), 5678, User.typeConnect.CONNECTED);
 
             System.out.println("Main controller creating a thread for MulticastServer...");
 

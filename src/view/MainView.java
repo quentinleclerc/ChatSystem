@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.HashedUserCredentialsRetriever;
+import model.HashedUserCredentialsSaver;
 
 import java.io.IOException;
 
@@ -73,6 +75,12 @@ public class MainView extends Application {
 
         LogInController controller = loader.getController();
         controller.setUsername("Quentin");
+        controller.setCredentialsRetriever(new HashedUserCredentialsRetriever());
+
+        HashedUserCredentialsSaver userSaver = new HashedUserCredentialsSaver();
+        userSaver.saveUserCredentials("Quentin", "motdepassequentin");
+        userSaver.saveUserCredentials("Luis", "motdepasseluis");
+        controller.setCredentialSaver(userSaver);
         controller.setPrevStage(primaryStage);
 
         //controller.setListener(new LazyCommunicationControllerListener() );

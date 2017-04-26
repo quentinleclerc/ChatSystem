@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Scene;
@@ -112,7 +113,7 @@ public class CommunicationController implements Initializable, ControlledScreen 
 	void onSend(ActionEvent event) {
 		String message = messageToSend.getText();
 		String selectedRecipient = getSelectedRecipient();
-		discussion.appendText("\n" + message);
+		Platform.runLater(() -> discussion.appendText("\n" + message));
 		listener.sendMessage(message, selectedRecipient);
 	}
 
@@ -127,7 +128,7 @@ public class CommunicationController implements Initializable, ControlledScreen 
 		while(true){
 			Message msgReceived = listener.receiveMessage(localUser);
 			String msgText = msgReceived.getData();
-			discussion.appendText("\n" + msgText);
+			Platform.runLater(() -> discussion.appendText("\n" + msgText));
 		}
 	}
 

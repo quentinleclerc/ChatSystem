@@ -1,6 +1,5 @@
 package model;
 
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.BufferedReader;
@@ -11,12 +10,12 @@ public class HashedUserCredentialsRetriever implements UserCredentialsRetriever 
 
     @Override
     public String getHashedPassword(String username) {
-        String file = "users.txt";
-        //String file = this.getClass().getResource("/users.txt").toExternalForm();
+        String file = "users/users.txt";
+        //String file = this.getClass().getResource("/users/users.txt").toExternalForm();
         BufferedReader br = null;
         String line = "";
         String splitBy = "#";
-        String users[] = null;
+        String users[];
         String result = "";
 
         try {

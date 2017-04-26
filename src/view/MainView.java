@@ -32,6 +32,10 @@ public class MainView extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         /*
+         * TODO : Make a general controller and methods like "callCommunicationView" in order to have the fields "set" correctly. Example : when calling back the login view in CommunicationController the credentials saver is not set again.
+         */
+
+        /*
         http://stackoverflow.com/questions/30814258/javafx-pass-parameters-while-instantiating-controller-class
          */
         /* ***************************

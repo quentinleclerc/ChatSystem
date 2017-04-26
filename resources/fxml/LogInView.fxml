@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@/css/LoginView.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogInController" >
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@/css/LoginView.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogInController">
     <padding><Insets bottom="25" left="25" right="25" top="25" /></padding>
    <children>
        
@@ -16,35 +16,45 @@
             <Font size="18.0" />
          </font></Text>
     
-       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="User Name:" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1">
+       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="84.0" text="User Name" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <font>
             <Font size="14.0" />
          </font></Label>
     
-       <TextField fx:id="username" prefHeight="48.0" prefWidth="338.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+       <TextField fx:id="username" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="48.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+         <padding>
+            <Insets right="10.0" />
+         </padding></TextField>
     
-       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="Password:" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2">
+       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="79.0" text="Password" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <font>
             <Font size="14.0" />
          </font></Label>
     
-       <PasswordField fx:id="passwordField" prefHeight="48.0" prefWidth="338.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+       <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="48.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
            
-       <HBox alignment="bottom_right" prefHeight="219.0" prefWidth="355.0" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
+       <HBox alignment="bottom_right" prefHeight="219.0" prefWidth="355.0" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
               <children>
-              <Button onAction="#onSignIn" prefHeight="43.0" prefWidth="105.0" text="Sign In" />
+              <Button onAction="#onSignUp" prefHeight="43.0" prefWidth="105.0" text="Sign Up" />
+            <Button onAction="#onSignIn" prefHeight="43.0" prefWidth="105.0" text="Sign In" />
               </children>
        </HBox>
    
-       <Text fx:id="actiontarget" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+       <Text fx:id="actiontarget" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Label fx:id="incorrectPassword" prefHeight="22.0" prefWidth="466.0" text="The password/login you entered does not match our records" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
    </children>
    <columnConstraints>
-      <ColumnConstraints maxWidth="230.0" minWidth="62.0" prefWidth="210.0" />
-      <ColumnConstraints maxWidth="488.0" minWidth="320.0" prefWidth="340.0" />
+      <ColumnConstraints maxWidth="230.0" minWidth="58.0" prefWidth="78.0" />
+      <ColumnConstraints maxWidth="492.0" minWidth="320.0" prefWidth="472.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints maxHeight="60.0" minHeight="0.0" prefHeight="60.0" />
-      <RowConstraints maxHeight="96.0" minHeight="25.0" prefHeight="95.0" />
+      <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="37.0" />
+      <RowConstraints maxHeight="98.0" minHeight="25.0" prefHeight="98.0" />
       <RowConstraints maxHeight="128.0" minHeight="35.0" prefHeight="83.0" />
       <RowConstraints maxHeight="94.0" minHeight="4.0" prefHeight="37.0" />
       <RowConstraints maxHeight="215.0" minHeight="60.0" prefHeight="60.0" />

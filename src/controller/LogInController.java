@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -28,13 +29,16 @@ public class LogInController implements Initializable, ControlledScreen {
     private PasswordField passwordField;
     @FXML
     private TextField username;
+    @FXML
+    private Label incorrectPassword;
+
 
     private Stage prevStage;
     private UserCredentialsRetriever credentialsRetriever;
     private UserCredentialsSaver credentialSaver;
 
 
-    public LogInController() {
+    public LogInController(){
         System.out.println("LogIn Controller initialized.");
     }
 
@@ -42,25 +46,49 @@ public class LogInController implements Initializable, ControlledScreen {
         this.prevStage = stage;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle rb) {
-        actiontarget.setText("");
+
+    public void setUsername(String username){
+        this.username.setText(username);
     }
-    
+
+    public void setCredentialsRetriever(UserCredentialsRetriever credentialsRetriever){
+        this.credentialsRetriever = credentialsRetriever;
+    }
+
+    public void setCredentialSaver(UserCredentialsSaver credentialSaver){
+        this.credentialSaver = credentialSaver;
+    }
+
     @Override
     public void setScreenParent(ViewsController screenParent){
         myController = screenParent;
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle rb) {
+        actiontarget.setText("");
+    }
+
+    @FXML
+    void onSignUp(ActionEvent event) {
+        /*
+        TODO : Save credentials into the database
+         */
+    }
+
     @FXML
     void onSignIn(ActionEvent event) throws IOException {
+
+
+        System.out.println("credentialsRetriever : " + credentialsRetriever);
 
         String hashed = credentialsRetriever.getHashedPassword(this.username.getText());
         String password = this.passwordField.getText();
 
         System.out.println("hashed : " + hashed + " | password " + password);
 
-        if (BCrypt.checkpw(password, hashed)) {
+        if (credentialsRetriever.checkPasswordCorrect(hashed, password)) {
+            incorrectPassword.setVisible(false);
             System.out.println("It matches");
 
             //myController.setScreen(MainView.screen2ID);
@@ -86,21 +114,9 @@ public class LogInController implements Initializable, ControlledScreen {
 
         }
         else {
+            incorrectPassword.setVisible(true);
             System.out.println("It does not match");
         }
-
-    }
-
-    public void setUsername(String username){
-        this.username.setText(username);
-    }
-
-    public void setCredentialsRetriever(UserCredentialsRetriever credentialsRetriever) {
-        this.credentialsRetriever = credentialsRetriever;
-    }
-
-    public void setCredentialSaver(UserCredentialsSaver credentialSaver) {
-        this.credentialSaver = credentialSaver;
     }
 }
 

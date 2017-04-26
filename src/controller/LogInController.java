@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -12,10 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sun.applet.Main;
+import model.User;
+import model.UserList;
 import view.MainView;
 
 public class LogInController implements Initializable, ControlledScreen {
@@ -27,6 +28,8 @@ public class LogInController implements Initializable, ControlledScreen {
     private PasswordField passwordField;
     @FXML
     private TextField username;
+    @FXML
+    private TextField port;
 
     private Stage prevStage;
 
@@ -55,7 +58,7 @@ public class LogInController implements Initializable, ControlledScreen {
         Stage stage = new Stage();
         stage.setTitle("Communication View");
         GridPane myPane;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.screen2File));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.CommunicationViewFXML));
         myPane = loader.load();
         Scene scene = new Scene(myPane);
         stage.setScene(scene);
@@ -64,18 +67,18 @@ public class LogInController implements Initializable, ControlledScreen {
         CommunicationController controller = loader.getController();
         controller.setPrevStage(stage);
         controller.setListener(new LazyCommunicationControllerListener() );
+
+        User localUser = new User(username.getText(), InetAddress.getByName("127.0.0.1"), Integer.parseInt(port.getText()), User.typeConnect.CONNECTED);
+        UserList.getInstance().setLocalUser(localUser);
+
         (new Thread(){
             public void run() {
                 controller.enableReception();
             }
         }).start();
-        /* ***************************************** */
-
 
         prevStage.close();
-
         stage.show();
-
         MulticastController.startAll(username.getText());
     }
 

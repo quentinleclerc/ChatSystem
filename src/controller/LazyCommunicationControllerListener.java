@@ -1,6 +1,7 @@
 package controller;
 
 
+import com.sun.corba.se.spi.activation.Server;
 import model.Message;
 import model.User;
 import model.UserList;
@@ -31,6 +32,7 @@ public class LazyCommunicationControllerListener implements CommunicationControl
             oos.writeObject(msg);
             oos.flush();
             oos.close();
+            socket.close();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -39,22 +41,25 @@ public class LazyCommunicationControllerListener implements CommunicationControl
     }
     
     @Override
-    public Message receiveMessage(User me){
-    		Message msg = null;
-        	try {
-				ServerSocket socket = new ServerSocket(me.getPort());
-	        	Socket socketDist = socket.accept();
-	        	ObjectInputStream ois = new ObjectInputStream(socketDist.getInputStream());
-	        	
-	        	msg = (Message) ois.readObject();
-			} catch (IOException e) {
-				System.out.println("Error in message reception at the socket creation...");
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				System.out.println("Error in message reception...");
-				e.printStackTrace();
-			}
-			return msg;
+    public Message receiveMessage(User localUser){
+        Message msg = null;
+        try {
+            ServerSocket socket = new ServerSocket(localUser.getPort());
+            Socket socketDist = socket.accept();
+            ObjectInputStream ois = new ObjectInputStream(socketDist.getInputStream());
+
+            msg = (Message) ois.readObject();
+            socket.close();
+            socketDist.close();
+            ois.close();
+        } catch (IOException e) {
+            System.out.println("Error in message reception at the socket creation...");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error in message reception...");
+            e.printStackTrace();
+        }
+        return msg;
     }
 
 

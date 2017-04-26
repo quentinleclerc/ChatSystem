@@ -1,6 +1,7 @@
 package controller;
 
 import model.User;
+import model.UserList;
 import network.MulticastReceiver;
 import network.MulticastSender;
 
@@ -17,12 +18,10 @@ public class MulticastController {
     private static final int PORT = 6789;
     // Sleep time between each message send on the channel
     private static final int SLEEP_TIME = 5000;
-    // Username entered by the user
-    private static String username;
     // Instance of MulticastReceiver
-    private static MulticastReceiver mReceiver ;
+    private static MulticastReceiver mReceiver;
     // Instance of MulticastSender
-    private static MulticastSender mSender ;
+    private static MulticastSender mSender;
 
     // Thread used to start and stop the emission/reception of data on the channel
     private static Thread multiSenderThread;
@@ -33,19 +32,13 @@ public class MulticastController {
         System.out.println("MulticastController initialized.");
     }
 
-    public static String getAdr() {
-		return ADR;
-	}
-
     public static void startAll(String user) {
-        username = user;
-        User myUser;
+        User localUser = UserList.getInstance().getLocalUser();
         try {
-            myUser = new User(username, InetAddress.getByName("127.0.0.1"), 5678, User.typeConnect.CONNECTED);
 
             System.out.println("Main controller creating a thread for MulticastServer...");
 
-            multiSenderThread = new Thread(mSender = new MulticastSender("225.1.2.3", PORT, SLEEP_TIME, myUser));
+            multiSenderThread = new Thread(mSender = new MulticastSender("225.1.2.3", PORT, SLEEP_TIME, localUser));
             multiSenderThread.start();
 
             System.out.println("Main controller creating a thread for MulticastClient...");

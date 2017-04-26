@@ -16,10 +16,12 @@ public class UserList {
 
     private final ObservableList<String> obsUsersList;
     
-    private final ObjectProperty<String> currentUser = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<String> selectedUser = new SimpleObjectProperty<>(null);
     
     private static UserList INSTANCE = null;
-    
+
+    private User localUser;
+
     private UserList() {
         obsUsersList = FXCollections.observableArrayList(usernames);
     }
@@ -77,23 +79,29 @@ public class UserList {
         return usernames.contains(user.getPseudo());
     }
 
-    public ObjectProperty<String> currentUserProperty() {
-        return currentUser ;
+    public ObjectProperty<String> selectedUserProperty() {
+        return selectedUser;
     }
 
-    public final String getCurrentUser() {
-        return currentUserProperty().get();
+    public final String getSelectedUser() {
+        return selectedUserProperty().get();
     }
 
-    public final void setCurrentUser(String user) {
-        currentUserProperty().set(user);
+    public final void setSelectedUser(String user) {
+        selectedUserProperty().set(user);
     }
 
     public ObservableList<String> getObsUsersList() {
         return obsUsersList;
     }
 
+    public void setLocalUser(User localUser) {
+        this.localUser = localUser;
+    }
 
+    public User getLocalUser() {
+        return localUser;
+    }
 }
 
 

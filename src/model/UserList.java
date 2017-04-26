@@ -10,74 +10,98 @@ import javafx.collections.ObservableList;
 
 public class UserList {
 
-    private ArrayList<String> usernames = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
-    private ArrayList<MessageUser> users = new ArrayList<>();
+    private List<String> usernames = new ArrayList<>();
 
     private final ObservableList<String> obsUsersList;
     
-    private final ObjectProperty<String> currentUser = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<String> selectedUser = new SimpleObjectProperty<>(null);
     
     private static UserList INSTANCE = null;
-    
+
+    private User localUser;
+
     private UserList() {
         obsUsersList = FXCollections.observableArrayList(usernames);
     }
     
-    public static UserList getInstance(){
+    public synchronized static UserList getInstance(){
     	if(INSTANCE == null){
     		INSTANCE = new UserList();
     	}
     		return INSTANCE;
     }
 
-    public void add(int index, MessageUser user){
-        users.add(index, user);
-        usernames.add(index, user.getPseudo());
-        obsUsersList.add(index, user.getPseudo());
+    public void add(int index, User user){
+        synchronized (this) {
+            users.add(index, user);
+            usernames.add(index, user.getPseudo());
+            obsUsersList.add(index, user.getPseudo());
+        }
     }
 
-    public void add(MessageUser user) {
-        users.add(user);
-        usernames.add(user.getPseudo());
-        obsUsersList.add(user.getPseudo());
+    public void add(User user) {
+        synchronized (this) {
+            users.add(user);
+            usernames.add(user.getPseudo());
+            obsUsersList.add(user.getPseudo());
+        }
     }
 
-    public void remove(int index){
+    public synchronized void remove(int index){
         users.remove(index);
         usernames.remove(index);
         obsUsersList.remove(index);
     }
     
-    public void remove(MessageUser user){
+    public synchronized void remove(User user){
         users.remove(user);
         usernames.remove(user.getPseudo());
         obsUsersList.remove(user.getPseudo());
     }
     
-    public void clearAll(){
+    public synchronized void clearAll(){
     	users.clear();
     	usernames.clear();
     	obsUsersList.clear();
     }
-    
-    public ObjectProperty<String> currentUserProperty() {
-        return currentUser ;
+
+    public User getUserByUsername(String username) {
+        return users.get(usernames.indexOf(username));
     }
 
-    public final String getCurrentUser() {
-        return currentUserProperty().get();
+    public int indexOf(User user) {
+        return usernames.indexOf(user.getPseudo());
     }
 
-    public final void setCurrentUser(String user) {
-        currentUserProperty().set(user);
+    public boolean contains(User user) {
+        return usernames.contains(user.getPseudo());
+    }
+
+    public ObjectProperty<String> selectedUserProperty() {
+        return selectedUser;
+    }
+
+    public final String getSelectedUser() {
+        return selectedUserProperty().get();
+    }
+
+    public final void setSelectedUser(String user) {
+        selectedUserProperty().set(user);
     }
 
     public ObservableList<String> getObsUsersList() {
         return obsUsersList;
     }
 
+    public void setLocalUser(User localUser) {
+        this.localUser = localUser;
+    }
 
+    public User getLocalUser() {
+        return localUser;
+    }
 }
 
 

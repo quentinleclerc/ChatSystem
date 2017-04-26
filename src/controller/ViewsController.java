@@ -26,7 +26,6 @@ public class ViewsController extends GridPane {
 
     // Add the screen to the collection
     public void addScreen(String name, Node screen) {
-
         screens.put(name, screen);
     }
 
@@ -54,10 +53,9 @@ public class ViewsController extends GridPane {
     }
 
     // This method tries to displayed the screen with a predefined name.
-    // First it makes sure the screen has been already loaded. Then if there is
-    // more than
-    // one screen the new screen is been added second, and then the current
-    // screen is removed.
+    // First it makes sure the screen has been already loaded. Then if there
+    // is more than one screen the new screen is been added second, and then
+    // the curren screen is removed.
     // If there isn't any screen being displayed, the new screen is just added
     // to the root.
     public boolean setScreen(final String name) {
@@ -69,11 +67,8 @@ public class ViewsController extends GridPane {
                         new KeyFrame(new Duration(80), new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent t) {
-                                getChildren().remove(0); // remove the displayed
-                                // screen
-                                getChildren().add(0, screens.get(name)); // add
-                                // the
-                                // screen
+                                getChildren().remove(0); // remove the displayed screen
+                                getChildren().add(0, screens.get(name)); // add the screen
                                 Timeline fadeIn = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(opacity, 0.0)),
                                         new KeyFrame(new Duration(80), new KeyValue(opacity, 1.0)));
                                 fadeIn.play();

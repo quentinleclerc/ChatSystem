@@ -16,14 +16,14 @@
             <Font size="18.0" />
          </font></Text>
     
-       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="User Name:" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1">
+       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="User Name" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1">
          <font>
             <Font size="14.0" />
          </font></Label>
     
-       <TextField prefHeight="48.0" prefWidth="338.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+       <TextField fx:id="username" prefHeight="48.0" prefWidth="338.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
     
-       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="Password:" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2">
+       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="Password" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2">
          <font>
             <Font size="14.0" />
          </font></Label>
@@ -37,6 +37,12 @@
        </HBox>
    
        <Text fx:id="actiontarget" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <TextField fx:id="port" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="Port " textAlignment="CENTER" GridPane.rowIndex="3">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
    <columnConstraints>
       <ColumnConstraints maxWidth="230.0" minWidth="62.0" prefWidth="210.0" />

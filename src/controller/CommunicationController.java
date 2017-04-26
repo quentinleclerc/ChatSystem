@@ -137,4 +137,15 @@ public class CommunicationController implements Initializable, ControlledScreen 
 		System.out.println("Listener correctly set");
 		this.listener = listener;
 	}
+
+	public void enableReception() {
+		String me = model.getCurrentUser();
+		UserList uList = UserList.getInstance();
+		User usr = uList.getUserByUsername(me);
+		while(true){	
+			Message msgReceived = listener.receiveMessage(usr);
+			String msgText = msgReceived.toString();
+			discussion.appendText("\n" + msgText);
+		}
+	}
 }

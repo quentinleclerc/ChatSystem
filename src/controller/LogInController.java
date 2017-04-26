@@ -64,6 +64,11 @@ public class LogInController implements Initializable, ControlledScreen {
         CommunicationController controller = loader.getController();
         controller.setPrevStage(stage);
         controller.setListener(new LazyCommunicationControllerListener() );
+        (new Thread(){
+            public void run() {
+                controller.enableReception();
+            }
+        }).start();
         /* ***************************************** */
 
 
@@ -76,6 +81,10 @@ public class LogInController implements Initializable, ControlledScreen {
 
     public void setUsername(String username){
         this.username.setText(username);
+    }
+    
+    public String getUsername(){
+    	return this.username.getText();
     }
 
 }

@@ -32,7 +32,7 @@
            
        <HBox alignment="bottom_right" prefHeight="219.0" prefWidth="355.0" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
               <children>
-              <Button onAction="#onSignIn" prefHeight="43.0" prefWidth="105.0" text="Sign In" />
+              <Button fx:id="signIn" onAction="#onSignIn" prefHeight="43.0" prefWidth="105.0" text="Sign In" />
               </children>
        </HBox>
    

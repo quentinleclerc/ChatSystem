@@ -6,14 +6,11 @@ import network.MulticastReceiver;
 import network.MulticastSender;
 
 import java.io.IOException;
-import java.net.InetAddress;
-
-import static java.lang.Thread.sleep;
 
 public class MulticastController {
 
     // Adress used for the multicast communication
-    private static final String ADR = "228.5.6.7";
+    private static final String ADR = "225.1.2.3";
     // Port used for the multicast communication
     private static final int PORT = 6789;
     // Sleep time between each message send on the channel
@@ -38,11 +35,11 @@ public class MulticastController {
 
             System.out.println("Main controller creating a thread for MulticastServer...");
 
-            multiSenderThread = new Thread(mSender = new MulticastSender("225.1.2.3", PORT, SLEEP_TIME, localUser));
+            multiSenderThread = new Thread(setmSender(new MulticastSender(ADR, PORT, SLEEP_TIME, localUser)));
             multiSenderThread.start();
 
             System.out.println("Main controller creating a thread for MulticastClient...");
-            multiReceiverThread = new Thread(mReceiver = new MulticastReceiver("225.1.2.3", PORT));
+            multiReceiverThread = new Thread(mReceiver = new MulticastReceiver(ADR, PORT));
             multiReceiverThread.start();
         }
         catch (Exception e) {
@@ -60,5 +57,14 @@ public class MulticastController {
         }
         multiSenderThread.interrupt();
     }
+
+	public static MulticastSender getmSender() {
+		return mSender;
+	}
+
+	public static MulticastSender setmSender(MulticastSender mSender) {
+		MulticastController.mSender = mSender;
+		return mSender;
+	}
 
 }

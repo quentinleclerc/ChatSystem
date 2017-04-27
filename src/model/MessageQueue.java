@@ -1,28 +1,40 @@
 package model;
 
-import java.util.LinkedList;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MessageQueue {
 
-    private LinkedList<Message> discussion;
+    private ConcurrentLinkedQueue<Message> discussion;
 
-    private User recipient;
-
-    public MessageQueue(User recipient) {
-        this.discussion = new LinkedList<>();
-        this.recipient = recipient;
+    public MessageQueue() {
+        this.discussion = new ConcurrentLinkedQueue<>();
     }
 
-    public LinkedList getDiscussion(){
+    public ConcurrentLinkedQueue<Message> getDiscussion(){
         return discussion;
-    }
-
-    public User getRecipient() {
-        return this.recipient;
     }
 
     public Boolean addMessage(Message msg) {
         return discussion.add(msg);
+    }
+    
+    public boolean addMessage(String msg, User emetteur){
+    	Message message = new Message(msg, emetteur);
+    	return discussion.add(message);
+    }
+    
+    public String displayQueue(){
+    	String str = "";
+	    Iterator<Message> listIterator = discussion.iterator();
+		while (listIterator.hasNext()) {
+			Message message = listIterator.next();
+			if(message.getEmetteur() == UserList.getInstance().getLocalUser())
+				str += "[Moi]" + listIterator.next().getData() + "\n";
+			else
+				str += "["+ message.getEmetteur().getPseudo() +"]" + listIterator.next().getData() + "\n";
+		}
+		return str;
     }
 
 }

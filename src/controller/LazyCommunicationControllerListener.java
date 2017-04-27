@@ -1,7 +1,6 @@
 package controller;
 
 
-import com.sun.corba.se.spi.activation.Server;
 import model.Message;
 import model.User;
 import model.UserList;
@@ -19,7 +18,7 @@ public class LazyCommunicationControllerListener implements CommunicationControl
         System.out.println(message + " to " + selectedRecipient);
         UserList list = UserList.getInstance();
         User recipient = list.getUserByUsername(selectedRecipient);
-        Message msg = new Message(message);
+        Message msg = new Message(message, list.getLocalUser());
 
 
 

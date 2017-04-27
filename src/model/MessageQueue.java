@@ -24,15 +24,16 @@ public class MessageQueue {
     	return discussion.add(message);
     }
     
-    public String displayQueue(){
+    public String toString(){
     	String str = "";
 	    Iterator<Message> listIterator = discussion.iterator();
-		while (listIterator.hasNext()) {
+
+        while (listIterator.hasNext()) {
 			Message message = listIterator.next();
 			if(message.getEmetteur() == UserList.getInstance().getLocalUser())
-				str += "[Moi]" + listIterator.next().getData() + "\n";
+				str += "[Moi]" + message.getData() + "\n";
 			else
-				str += "["+ message.getEmetteur().getPseudo() +"]" + listIterator.next().getData() + "\n";
+				str += "["+ message.getEmetteur().getPseudo() +"]" + message.getData() + "\n";
 		}
 		return str;
     }

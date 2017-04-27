@@ -36,7 +36,6 @@ public class UserDiscussionLink {
 	public synchronized MessageQueue getUserMessageQueue(User usr){
 		//return null if the user is not in the HashMap
 		return userMessages.get(usr);
-			
 	}
 	
 	public boolean containsUser(User user) {

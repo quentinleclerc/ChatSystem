@@ -72,7 +72,8 @@ public class CommunicationController implements Initializable, ControlledScreen 
 				User recipient = UserList.getInstance().getUserByUsername(newSelection);
 				
 				MessageQueue discussion = UserDiscussionLink.getInstance().getUserMessageQueue(recipient);
-				Platform.runLater(() -> filDiscussion.setText(discussion.displayQueue()));
+				System.out.println(discussion.toString());
+				filDiscussion.setText(discussion.toString());
 			}
 		});
 	}
@@ -120,8 +121,7 @@ public class CommunicationController implements Initializable, ControlledScreen 
 		
 		MessageQueue discussion = UserDiscussionLink.getInstance().getUserMessageQueue(recipient);
 		discussion.addMessage(message, emetteur);
-		Platform.runLater(() 
-				-> filDiscussion.setText(discussion.displayQueue())); //Ancien : filDiscussion.appendText("\n" + message));	
+		filDiscussion.setText(discussion.toString());
 		listener.sendMessage(message, selectedRecipient);
 		messageToSend.clear();
 	}
@@ -137,9 +137,15 @@ public class CommunicationController implements Initializable, ControlledScreen 
 		while(true){
 			Message msgReceived = listener.receiveMessage(localUser);
 			
-			MessageQueue discussion = UserDiscussionLink.getInstance().getUserMessageQueue(msgReceived.getEmetteur());
+			UserDiscussionLink udl = UserDiscussionLink.getInstance();
+			MessageQueue discussion = udl.getUserMessageQueue(msgReceived.getEmetteur());
+
+			System.out.println("UDL : " + udl);
+			System.out.println("Emetteur : "+ msgReceived.getEmetteur());
+			System.out.println("Discussion : " + discussion);
+			System.out.println("Message : "+ msgReceived.getData());
 			discussion.addMessage(msgReceived);
-			Platform.runLater(() -> filDiscussion.setText(discussion.displayQueue())); // Ancien : filDiscussion.appendText("\n" + msgText));
+			filDiscussion.setText(discussion.toString());
 		}
 	}
 

@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -12,10 +13,6 @@ import view.MainView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,6 +38,9 @@ public class CommunicationController implements Initializable, ControlledScreen 
 	TextArea discussion;
 	private CommunicationControllerListener listener;
 	private Stage prevStage;
+
+	@FXML
+	ListView<User> listViewUser;
 
 
 	public CommunicationController() {
@@ -70,6 +70,27 @@ public class CommunicationController implements Initializable, ControlledScreen 
 			if (newSelection != null) {
 				send.setDisable(false);
 				recipientField.setText(newSelection);
+				System.out.println(newSelection);
+			}
+		});
+
+		listViewUser.setItems(model.getObsUsersListList());
+		listViewUser.setCellFactory((list) -> new ListCell<User>() {
+            @Override
+            protected void updateItem(User item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(item.getPseudo() + " ["+ item.getIP() +":" +item.getPort()+ "]");
+                }
+            }
+        });
+		listViewUser.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+			if(newSelection != null) {
+				send.setDisable(false);
+				recipientField.setText(newSelection.getPseudo());
 				System.out.println(newSelection);
 			}
 		});

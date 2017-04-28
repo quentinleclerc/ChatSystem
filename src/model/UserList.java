@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 
 public class UserList {
 
+
     private List<User> users = new ArrayList<>();
 
     private List<String> usernames = new ArrayList<>();
@@ -22,8 +23,18 @@ public class UserList {
 
     private User localUser;
 
+
+    /* MODIFICATIONS */
+    // private List<User> users = new ArrayList<>();
+
+    private ObservableList<User> obsUsersListList;
+
+
+
+
     private UserList() {
         obsUsersList = FXCollections.observableArrayList(usernames);
+        obsUsersListList = FXCollections.observableArrayList(users);
     }
     
     public synchronized static UserList getInstance(){
@@ -38,6 +49,7 @@ public class UserList {
             users.add(index, user);
             usernames.add(index, user.getPseudo());
             obsUsersList.add(index, user.getPseudo());
+            obsUsersListList.add(index, user);
         }
     }
 
@@ -46,6 +58,7 @@ public class UserList {
             users.add(user);
             usernames.add(user.getPseudo());
             obsUsersList.add(user.getPseudo());
+            obsUsersListList.add(user);
         }
     }
 
@@ -53,18 +66,21 @@ public class UserList {
         users.remove(index);
         usernames.remove(index);
         obsUsersList.remove(index);
+        obsUsersListList.remove(index);
     }
     
     public synchronized void remove(User user){
         users.remove(user);
         usernames.remove(user.getPseudo());
         obsUsersList.remove(user.getPseudo());
+        obsUsersListList.remove(user);
     }
     
     public synchronized void clearAll(){
     	users.clear();
     	usernames.clear();
     	obsUsersList.clear();
+        obsUsersListList.clear();
     }
 
     public User getUserByUsername(String username) {
@@ -102,6 +118,15 @@ public class UserList {
     public User getLocalUser() {
         return localUser;
     }
+
+    public ObservableList<User> getObsUsersListList() {
+        return obsUsersListList;
+    }
+
+    public void setObsUsersListList(ObservableList<User> obsUsersListList) {
+        this.obsUsersListList = obsUsersListList;
+    }
+
 }
 
 

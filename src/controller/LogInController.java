@@ -1,22 +1,16 @@
 package controller;
 
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.User;
-import model.UserList;
 import view.MainView;
 
 public class LogInController implements Initializable, ControlledScreen {
@@ -32,6 +26,8 @@ public class LogInController implements Initializable, ControlledScreen {
     private TextField port;
 
     private Stage prevStage;
+
+    private MainView mainView;
 
 
     public LogInController() {
@@ -54,41 +50,11 @@ public class LogInController implements Initializable, ControlledScreen {
 
     @FXML
     void onSignIn(ActionEvent event) throws IOException {
-        //myController.setScreen(MainView.screen2ID);
-        Stage stage = new Stage();
-        stage.setTitle("Communication View");
-        GridPane myPane;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.CommunicationViewFXML));
-        myPane = loader.load();
-        Scene scene = new Scene(myPane);
-        stage.setScene(scene);
-
-        // Get communication controller to set the prevStage
-        CommunicationController controller = loader.getController();
-        controller.setPrevStage(stage);
-        controller.setListener(new LazyCommunicationControllerListener() );
-
-        User localUser = new User(username.getText(), InetAddress.getByName("127.0.0.1"), Integer.parseInt(port.getText()), User.typeConnect.CONNECTED);
-        controller.setLocalUser(localUser);
-
-        (new Thread(){
-            public void run() {
-                controller.enableReception();
-            }
-        }).start();
-
-        prevStage.close();
-        stage.show();
-        MulticastController.startAll(localUser);
+        this.mainView.showCommunicationView(this.prevStage, username.getText(), port.getText());
     }
 
-    public void setUsername(String username){
-        this.username.setText(username);
+    public void setMainView(MainView mainView) {
+        this.mainView = mainView;
     }
-    
-    public String getUsername(){
-    	return this.username.getText();
-    }
-
 }
 

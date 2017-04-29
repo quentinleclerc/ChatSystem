@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-class LazyCommunicationControllerListener implements CommunicationControllerListener {
+public class LazyCommunicationControllerListener implements CommunicationControllerListener {
 
     @Override
     public void sendMessage(String message, User selectedRecipient) {

@@ -1,10 +1,7 @@
 package controller;
 
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.*;
 import view.MainView;
@@ -40,6 +37,8 @@ public class CommunicationController implements Initializable, ControlledScreen 
 	protected UserList model;
 
 	private User localUser;
+
+	private MainView mainView;
 
 	public CommunicationController() {
 		System.out.println("Communication Controller initialized.");
@@ -94,24 +93,8 @@ public class CommunicationController implements Initializable, ControlledScreen 
 
 	@FXML
 	void onDisconnect(ActionEvent event) throws IOException {
-		Stage stage = new Stage();
-		stage.setTitle("Login View");
-		GridPane myPane;
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.LoginViewFXML));
-		myPane = loader.load();
-		Scene scene = new Scene(myPane);
-		stage.setScene(scene);
-
-		// Get LogInController to set prevStage
-		LogInController controller = loader.getController();
-		controller.setPrevStage(stage);
-		/* ***************************************** */
-
-		prevStage.close();
-
-		stage.show();
-
-		MulticastController.stopAll();
+		this.mainView.showLoginView(this.prevStage, false);
+		this.model.remove(localUser);
     }
 
 	private User getSelectedRecipient() {
@@ -142,5 +125,9 @@ public class CommunicationController implements Initializable, ControlledScreen 
 
 	public void setLocalUser(User localUser) {
 		this.localUser = localUser;
+	}
+
+	public void setMainView(MainView mainView) {
+		this.mainView = mainView;
 	}
 }

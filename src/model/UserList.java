@@ -11,19 +11,10 @@ public class UserList {
 
     private List<User> users = new ArrayList<>();
 
-    private static UserList INSTANCE = null;
-
     private ObservableList<User> obsUsersList;
 
-    private UserList() {
+    public UserList() {
         obsUsersList = FXCollections.observableArrayList(users);
-    }
-    
-    public synchronized static UserList getInstance(){
-    	if(INSTANCE == null){
-    		INSTANCE = new UserList();
-    	}
-    		return INSTANCE;
     }
 
     public void add(int index, User user){
@@ -67,7 +58,4 @@ public class UserList {
         return obsUsersList;
     }
 
-
 }
-
-

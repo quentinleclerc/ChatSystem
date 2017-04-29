@@ -13,9 +13,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import view.MainView;
 
-public class LogInController implements Initializable, ControlledScreen {
+public class LogInController implements Initializable {
 	
-    private ViewsController myController;
     @FXML
     private Text actiontarget;
     @FXML
@@ -28,6 +27,8 @@ public class LogInController implements Initializable, ControlledScreen {
     private Stage prevStage;
 
     private MainView mainView;
+
+    private MulticastController multiControl;
 
 
     public LogInController() {
@@ -42,19 +43,18 @@ public class LogInController implements Initializable, ControlledScreen {
     public void initialize(URL location, ResourceBundle rb) {
         actiontarget.setText("");
     }
-    
-    @Override
-    public void setScreenParent(ViewsController screenParent){
-        myController = screenParent;
-    }
 
     @FXML
     void onSignIn(ActionEvent event) throws IOException {
-        this.mainView.showCommunicationView(this.prevStage, username.getText(), port.getText());
+        this.mainView.showCommunicationView(this.prevStage, username.getText(), port.getText(), multiControl);
     }
 
     public void setMainView(MainView mainView) {
         this.mainView = mainView;
+    }
+
+    public void setMultiControl(MulticastController multiControl) {
+        this.multiControl = multiControl;
     }
 }
 

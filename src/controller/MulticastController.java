@@ -18,21 +18,24 @@ public class MulticastController {
     private static final int PORT = 6789;
     // Sleep time between each message send on the channel
     private static final int SLEEP_TIME = 5000;
+
     // Instance of MulticastReceiver
-    private static MulticastReceiver mReceiver;
+    private MulticastReceiver mReceiver;
     // Instance of MulticastSender
-    private static MulticastSender mSender;
-
+    private MulticastSender mSender;
     // Thread used to start and stop the emission/reception of data on the channel
-    private static Thread multiSenderThread;
-    private static Thread multiReceiverThread;
+    private Thread multiSenderThread;
+    private Thread multiReceiverThread;
+
+    private UserList model;
 
 
-    public MulticastController() {
+    public MulticastController(UserList model) {
+        this.model = model;
         System.out.println("MulticastController initialized.");
     }
 
-    public static void startAll(User localUser) {
+    public void startAll(User localUser) {
         try {
             System.out.println("Main controller creating a thread for MulticastServer...");
 
@@ -40,7 +43,7 @@ public class MulticastController {
             multiSenderThread.start();
 
             System.out.println("Main controller creating a thread for MulticastClient...");
-            multiReceiverThread = new Thread(mReceiver = new MulticastReceiver(ADR, PORT));
+            multiReceiverThread = new Thread(mReceiver = new MulticastReceiver(ADR, PORT, model));
             multiReceiverThread.start();
         }
         catch (Exception e) {
@@ -48,7 +51,7 @@ public class MulticastController {
         }
     }
 
-    public static void stopAll() {
+    public void stopAll() {
         try {
             mReceiver.close();
         } catch (IOException e) {
@@ -58,5 +61,4 @@ public class MulticastController {
         }
         multiSenderThread.interrupt();
     }
-
 }

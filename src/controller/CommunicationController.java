@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CommunicationController implements Initializable, ControlledScreen {
+public class CommunicationController implements Initializable {
 
 	@FXML
 	ListView<User> listViewUser;
@@ -32,13 +32,14 @@ public class CommunicationController implements Initializable, ControlledScreen 
 
 	private Stage prevStage;
 
-	private ViewsController myController;
 
 	protected UserList model;
 
 	private User localUser;
 
 	private MainView mainView;
+
+	private MulticastController multiControl;
 
 	public CommunicationController() {
 		System.out.println("Communication Controller initialized.");
@@ -50,15 +51,9 @@ public class CommunicationController implements Initializable, ControlledScreen 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		model = UserList.getInstance();
 		send.setDisable(true);
-		initModel();
 	}
 
-	@Override
-	public void setScreenParent(ViewsController screenParent) {
-		setMyController(screenParent);
-	}
 
 	private void initModel() {
 		listViewUser.setItems(model.getObsUsersList());
@@ -83,17 +78,9 @@ public class CommunicationController implements Initializable, ControlledScreen 
 		});
 	}
 
-	public ViewsController getMyController() {
-		return myController;
-	}
-
-	private void setMyController(ViewsController myController) {
-		this.myController = myController;
-	}
-
 	@FXML
 	void onDisconnect(ActionEvent event) throws IOException {
-		this.mainView.showLoginView(this.prevStage, false);
+		this.mainView.showLoginView(this.prevStage, false, multiControl);
 		this.model.remove(localUser);
     }
 
@@ -129,5 +116,14 @@ public class CommunicationController implements Initializable, ControlledScreen 
 
 	public void setMainView(MainView mainView) {
 		this.mainView = mainView;
+	}
+
+	public void setModel(UserList model) {
+		this.model = model;
+		initModel();
+	}
+
+	public void setMultiControl(MulticastController multiControl) {
+		this.multiControl = multiControl;
 	}
 }

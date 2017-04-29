@@ -69,7 +69,7 @@ public class LogInController implements Initializable, ControlledScreen {
         controller.setListener(new LazyCommunicationControllerListener() );
 
         User localUser = new User(username.getText(), InetAddress.getByName("127.0.0.1"), Integer.parseInt(port.getText()), User.typeConnect.CONNECTED);
-        UserList.getInstance().setLocalUser(localUser);
+        controller.setLocalUser(localUser);
 
         (new Thread(){
             public void run() {
@@ -79,7 +79,7 @@ public class LogInController implements Initializable, ControlledScreen {
 
         prevStage.close();
         stage.show();
-        MulticastController.startAll(username.getText());
+        MulticastController.startAll(localUser);
     }
 
     public void setUsername(String username){

@@ -32,17 +32,15 @@ public class MulticastController {
         System.out.println("MulticastController initialized.");
     }
 
-    public static void startAll(String user) {
-        User localUser = UserList.getInstance().getLocalUser();
+    public static void startAll(User localUser) {
         try {
-
             System.out.println("Main controller creating a thread for MulticastServer...");
 
-            multiSenderThread = new Thread(mSender = new MulticastSender("225.1.2.3", PORT, SLEEP_TIME, localUser));
+            multiSenderThread = new Thread(mSender = new MulticastSender(ADR, PORT, SLEEP_TIME, localUser));
             multiSenderThread.start();
 
             System.out.println("Main controller creating a thread for MulticastClient...");
-            multiReceiverThread = new Thread(mReceiver = new MulticastReceiver("225.1.2.3", PORT));
+            multiReceiverThread = new Thread(mReceiver = new MulticastReceiver(ADR, PORT));
             multiReceiverThread.start();
         }
         catch (Exception e) {

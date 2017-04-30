@@ -31,11 +31,16 @@ public class LogInController implements Initializable, ControlledScreen {
     private TextField username;
     @FXML
     private Label incorrectPassword;
+    @FXML
+    private Label userAlreadyRegistered;
+    @FXML
+    private Label userCorrectlyRegistered;
 
 
     private Stage prevStage;
     private UserCredentialsRetriever credentialsRetriever;
     private UserCredentialsSaver credentialSaver;
+
 
 
     public LogInController(){
@@ -71,15 +76,16 @@ public class LogInController implements Initializable, ControlledScreen {
 
     @FXML
     void onSignUp(ActionEvent event) {
-        /*
-        TODO : Save credentials into the database
-         */
+        if (this.credentialsRetriever.checkUserRegistered(this.username.getText())) {
+            setVisible(this.userAlreadyRegistered);
+        } else {
+            this.credentialSaver.saveUserCredentials(this.username.getText(), this.passwordField.getText());
+            setVisible(userCorrectlyRegistered);
+        }
     }
 
     @FXML
     void onSignIn(ActionEvent event) throws IOException {
-
-
         System.out.println("credentialsRetriever : " + credentialsRetriever);
 
         String hashed = credentialsRetriever.getHashedPassword(this.username.getText());
@@ -88,7 +94,7 @@ public class LogInController implements Initializable, ControlledScreen {
         System.out.println("hashed : " + hashed + " | password " + password);
 
         if (credentialsRetriever.checkPasswordCorrect(hashed, password)) {
-            incorrectPassword.setVisible(false);
+            setVisible(incorrectPassword);
             System.out.println("It matches");
 
             //myController.setScreen(MainView.screen2ID);
@@ -114,9 +120,16 @@ public class LogInController implements Initializable, ControlledScreen {
 
         }
         else {
-            incorrectPassword.setVisible(true);
+            setVisible(incorrectPassword);
             System.out.println("It does not match");
         }
+    }
+
+    private void setVisible(Label lab) {
+        incorrectPassword.setVisible(false);
+        userAlreadyRegistered.setVisible(false);
+        userCorrectlyRegistered.setVisible(false);
+        lab.setVisible(true);
     }
 }
 

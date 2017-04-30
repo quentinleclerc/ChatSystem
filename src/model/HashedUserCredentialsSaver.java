@@ -10,8 +10,8 @@ import java.io.IOException;
 public class HashedUserCredentialsSaver implements UserCredentialsSaver {
     @Override
     public void saveUserCredentials(String username, String password) {
-        String file = "users/users.txt";
-        //String file = this.getClass().getResource("/users/users.txt").toExternalForm();
+        String file = "users.txt";
+        // String file = getClass().getResource("/users/users.txt").toExternalForm();
         BufferedWriter bw = null;
         String splitBy = "#";
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt());

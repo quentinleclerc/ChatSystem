@@ -46,6 +46,16 @@
             <Font size="16.0" />
          </font>
       </Label>
+      <Label fx:id="userAlreadyRegistered" prefHeight="30.0" prefWidth="475.0" text="Your username is already registered in our records" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="userCorrectlyRegistered" prefHeight="22.0" prefWidth="466.0" text="User correctly registered, you can now Sign in" textFill="#0019ff" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
    </children>
    <columnConstraints>
       <ColumnConstraints maxWidth="230.0" minWidth="58.0" prefWidth="78.0" />

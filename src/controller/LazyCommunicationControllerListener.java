@@ -1,10 +1,8 @@
 package controller;
 
 
-import com.sun.corba.se.spi.activation.Server;
 import model.Message;
 import model.User;
-import model.UserList;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,17 +13,13 @@ import java.net.Socket;
 public class LazyCommunicationControllerListener implements CommunicationControllerListener {
 
     @Override
-    public void sendMessage(String message, String selectedRecipient) {
+    public void sendMessage(String message, User selectedRecipient) {
         System.out.println(message + " to " + selectedRecipient);
-        UserList list = UserList.getInstance();
-        User recipient = list.getUserByUsername(selectedRecipient);
         Message msg = new Message(message);
 
-
-
         try {
-            System.out.println(recipient.getIP().toString() + recipient.getPort());
-            Socket socket = new Socket(recipient.getIP(), recipient.getPort());
+            System.out.println(selectedRecipient.getIP().toString() + selectedRecipient.getPort());
+            Socket socket = new Socket(selectedRecipient.getIP(), selectedRecipient.getPort());
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 

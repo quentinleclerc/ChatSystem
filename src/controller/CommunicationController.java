@@ -1,32 +1,22 @@
 package controller;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+import javafx.application.Platform;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
 import view.MainView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CommunicationController implements Initializable, ControlledScreen {
-
-	private ViewsController myController;
-
-	protected UserList model;
+public class CommunicationController implements Initializable {
 
 	@FXML
-	ListView<String> listView;
+	ListView<User> listViewUser;
 	@FXML
 	Button disconnect;
 	@FXML
@@ -37,9 +27,19 @@ public class CommunicationController implements Initializable, ControlledScreen 
 	TextField recipientField;
 	@FXML
 	TextArea discussion;
+
 	private CommunicationControllerListener listener;
+
 	private Stage prevStage;
 
+
+	protected UserList model;
+
+	private User localUser;
+
+	private MainView mainView;
+
+	private MulticastController multiControl;
 
 	public CommunicationController() {
 		System.out.println("Communication Controller initialized.");
@@ -51,84 +51,48 @@ public class CommunicationController implements Initializable, ControlledScreen 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		model = UserList.getInstance();
-		initModel();
+		send.setDisable(true);
 	}
 
-	@Override
-	public void setScreenParent(ViewsController screenParent) {
-		setMyController(screenParent);
-	}
-	
-	public void initModel() {
 
-        listView.setItems(model.getObsUsersList());
-        listView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> 
-            model.setCurrentUser(newSelection));
+	private void initModel() {
+		listViewUser.setItems(model.getObsUsersList());
+		listViewUser.setCellFactory((list) -> new ListCell<User>() {
+            @Override
+            protected void updateItem(User item, boolean empty) {
+                super.updateItem(item, empty);
 
-        model.currentUserProperty().addListener((obs, oldUser, newUser) -> {
-            if (newUser == null) {
-                listView.getSelectionModel().clearSelection();
-            } else {
-                listView.getSelectionModel().select(newUser);
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(item.getPseudo() + " ["+ item.getIP() +":" +item.getPort()+ "]");
+                }
             }
         });
-    }
-
-	public ViewsController getMyController() {
-		return myController;
+		listViewUser.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+			if(newSelection != null) {
+				send.setDisable(false);
+				recipientField.setText(newSelection.getPseudo());
+				System.out.println(newSelection);
+			}
+		});
 	}
-
-	public void setMyController(ViewsController myController) {
-		this.myController = myController;
-	}
-
-	public UserList getModel() {
-		return model;
-	}
-
-	public void setModel(UserList model) {
-		this.model = model;
-	}
-
-
 
 	@FXML
 	void onDisconnect(ActionEvent event) throws IOException {
-        //myController.setScreen(MainView.screen1ID);
-		Stage stage = new Stage();
-		stage.setTitle("Login View");
-		GridPane myPane = null;
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.screen1File));
-		myPane = loader.load();
-		Scene scene = new Scene(myPane);
-		stage.setScene(scene);
-
-		// Get LogInController to set prevStage
-		LogInController controller = loader.getController();
-		controller.setPrevStage(stage);
-		/* ***************************************** */
-
-		prevStage.close();
-
-		stage.show();
-
-		MulticastController.stopAll();
+		this.mainView.showLoginView(this.prevStage, false, multiControl);
+		this.model.remove(localUser);
     }
 
-	@FXML
-	void onMouseClicked(MouseEvent event) {
-		System.out.println(getSelectedRecipient());
-	}
-
-	private String getSelectedRecipient() {
-		return listView.getSelectionModel().getSelectedItem();
+	private User getSelectedRecipient() {
+		return listViewUser.getSelectionModel().getSelectedItem();
 	}
 
 	@FXML
 	void onSend(ActionEvent event) {
 		String message = messageToSend.getText();
-		String selectedRecipient = getSelectedRecipient();
+		User selectedRecipient = getSelectedRecipient();
+		Platform.runLater(() -> discussion.appendText("\n" + message));
 		listener.sendMessage(message, selectedRecipient);
 	}
 
@@ -136,5 +100,30 @@ public class CommunicationController implements Initializable, ControlledScreen 
 	public void setListener(CommunicationControllerListener listener) {
 		System.out.println("Listener correctly set");
 		this.listener = listener;
+	}
+
+	public void enableReception() {
+		while(true){
+			Message msgReceived = listener.receiveMessage(this.localUser);
+			String msgText = msgReceived.getData();
+			Platform.runLater(() -> discussion.appendText("\n" + msgText));
+		}
+	}
+
+	public void setLocalUser(User localUser) {
+		this.localUser = localUser;
+	}
+
+	public void setMainView(MainView mainView) {
+		this.mainView = mainView;
+	}
+
+	public void setModel(UserList model) {
+		this.model = model;
+		initModel();
+	}
+
+	public void setMultiControl(MulticastController multiControl) {
+		this.multiControl = multiControl;
 	}
 }

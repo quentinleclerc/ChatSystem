@@ -1,7 +1,11 @@
 package controller;
 
-public interface CommunicationControllerListener {
+import model.Message;
+import model.User;
 
-    void sendMessage(String message, String selectedRecipient);
+ interface CommunicationControllerListener {
+
+    void sendMessage(String message, User selectedRecipient);
+    Message receiveMessage(User me);
 
 }

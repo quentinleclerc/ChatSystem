@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 import java.io.IOException;
@@ -10,19 +9,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import view.MainView;
+
 import model.UserCredentialsRetriever;
 import model.UserCredentialsSaver;
-import view.MainView;
+
 import org.mindrot.jbcrypt.BCrypt;
 
-public class LogInController implements Initializable, ControlledScreen {
+public class LogInController implements Initializable {
 	
-    private ViewsController myController;
     @FXML
     private Text actiontarget;
     @FXML
@@ -36,12 +36,15 @@ public class LogInController implements Initializable, ControlledScreen {
     @FXML
     private Label userCorrectlyRegistered;
 
+    private TextField port;
 
     private Stage prevStage;
     private UserCredentialsRetriever credentialsRetriever;
     private UserCredentialsSaver credentialSaver;
 
+    private MainView mainView;
 
+    private MulticastController multiControl;
 
     public LogInController(){
         System.out.println("LogIn Controller initialized.");
@@ -63,10 +66,13 @@ public class LogInController implements Initializable, ControlledScreen {
     public void setCredentialSaver(UserCredentialsSaver credentialSaver){
         this.credentialSaver = credentialSaver;
     }
+  
+    public void setMainView(MainView mainView) {
+        this.mainView = mainView;
+    }
 
-    @Override
-    public void setScreenParent(ViewsController screenParent){
-        myController = screenParent;
+    public void setMultiControl(MulticastController multiControl) {
+        this.multiControl = multiControl;
     }
 
     @Override
@@ -86,45 +92,17 @@ public class LogInController implements Initializable, ControlledScreen {
 
     @FXML
     void onSignIn(ActionEvent event) throws IOException {
-        System.out.println("credentialsRetriever : " + credentialsRetriever);
-
         String hashed = credentialsRetriever.getHashedPassword(this.username.getText());
         String password = this.passwordField.getText();
 
-        System.out.println("hashed : " + hashed + " | password " + password);
-
         if (credentialsRetriever.checkPasswordCorrect(hashed, password)) {
-            setVisible(incorrectPassword);
-            System.out.println("It matches");
-
-            //myController.setScreen(MainView.screen2ID);
-            Stage stage = new Stage();
-            stage.setTitle("Communication View");
-            GridPane myPane = null;
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.screen2File));
-            myPane = loader.load();
-            Scene scene = new Scene(myPane);
-            stage.setScene(scene);
-
-            // Get communication controller to set the prevStage
-            CommunicationController controller = loader.getController();
-            controller.setPrevStage(stage);
-            controller.setListener(new LazyCommunicationControllerListener() );
-            /* ***************************************** */
-
-            prevStage.close();
-
-            stage.show();
-
-            MulticastController.startAll(username.getText());
-
+            this.mainView.showCommunicationView(this.prevStage, username.getText(), port.getText(), multiControl);
         }
         else {
             setVisible(incorrectPassword);
-            System.out.println("It does not match");
         }
     }
-
+  
     private void setVisible(Label lab) {
         incorrectPassword.setVisible(false);
         userAlreadyRegistered.setVisible(false);
@@ -132,4 +110,7 @@ public class LogInController implements Initializable, ControlledScreen {
         lab.setVisible(true);
     }
 }
+
+
+
 

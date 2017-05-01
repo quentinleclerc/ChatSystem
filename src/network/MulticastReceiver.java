@@ -25,10 +25,12 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
     private UserList users;
 
 
-    public MulticastReceiver(String adr, int port) throws IOException {
+    public MulticastReceiver(String adr, int port, UserList userList) throws IOException {
         this.INET_ADDR = InetAddress.getByName(adr);
         this.PORT = port;
         this.socket = new MulticastSocket(port);
+        this.users = userList;
+        System.out.println("MulticastReceiver started, users = "+ users);
     }
 
     public int getPort() {
@@ -70,7 +72,6 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
     }
 
     private void treatUser(User userReceived)  {
-        users = UserList.getInstance();
 
         User.typeConnect userState = userReceived.getEtat();
 
@@ -119,6 +120,7 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
 
         userReceived = (User) ois.readObject();
 
+        System.out.println("[DEBUGG] USER RECEIVED : " + userReceived);
         // Adding the received user to the UserList
         treatUser(userReceived);
 

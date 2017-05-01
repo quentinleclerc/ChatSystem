@@ -1,131 +1,113 @@
 package view;
 
-import controller.*;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
+import controller.CommunicationController;
+import controller.LazyCommunicationControllerListener;
+import controller.LogInController;
+import controller.MulticastController;
+
 import model.HashedUserCredentialsRetriever;
 import model.HashedUserCredentialsSaver;
+import model.User;
+import model.UserList;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 public class MainView extends Application {
-	/**
-	 * Be careful, depending on the IDE you have to use the relative
-	 * or absolute path. Don't forget to add the resources folder
-	 * to your java build path
-	 */
-    public static String screen1ID = "LoginView";
-    public static String screen1File  = "/fxml/LogInView.fxml";
-    public static String screen2ID = "CommunicationView";
-    public static String screen2File  = "/fxml/CommunicationView.fxml";
-    
-    private static Stage primaryStage;
+ 
+    private static String LoginViewFXML = "/fxml/LogInView.fxml";
+    private static String CommunicationViewFXML = "/fxml/CommunicationView.fxml";
 
-    
+    private UserList userList;
+    private MulticastController multiControl;
+
+    public MainView() {
+    }
+
     @Override
     public void start(Stage primaryStage) throws IOException {
+        System.setProperty("java.net.preferIPv4Stack", "true");
+        userList = new UserList() ;
+        multiControl = new MulticastController(userList);
 
-        /*
-         * TODO : Make a general controller and methods like "callCommunicationView" in order to have the fields "set" correctly. Example : when calling back the login view in CommunicationController the credentials saver is not set again.
-         */
-
-        /*
-        http://stackoverflow.com/questions/30814258/javafx-pass-parameters-while-instantiating-controller-class
-         */
-        /* ***************************
-        Method by instantiating the controller manually
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(screen1File));
-        LogInController logControl = new LogInController();
-        loader.setController(logControl);
-
-        ViewsController mainContainer = new ViewsController();
-
-        mainContainer.loadScreen(MainView.screen1ID, MainView.screen1File);
-        mainContainer.setScreen(screen1ID);
-
-        MainView.primaryStage = primaryStage;
-        Group root = new Group();
-        root = loader.load();
-        root.getChildren().addAll(mainContainer);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        *************************  */
-
-
-
-
-        /* *************************
-        Method by fetching the controller instance and setting values
-        */
-
-        //ViewsController mainContainer = new ViewsController();
-
-
-        //mainContainer.loadScreen(MainView.screen1ID, MainView.screen1File);
-        //mainContainer.setScreen(screen1ID);
-
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(screen1File));
-        GridPane grid = loader.load();
-
-        LogInController controller = loader.getController();
-        controller.setUsername("Quentin");
-        controller.setCredentialsRetriever(new HashedUserCredentialsRetriever());
-
-        HashedUserCredentialsSaver userSaver = new HashedUserCredentialsSaver();
-        userSaver.saveUserCredentials("Quentin", "motdepassequentin");
-        userSaver.saveUserCredentials("Luis", "motdepasseluis");
-        controller.setCredentialSaver(userSaver);
-        controller.setPrevStage(primaryStage);
-
-        //controller.setListener(new LazyCommunicationControllerListener() );
-
-        //MainView.primaryStage = primaryStage;
-
-        //Group root = new Group();
-        //root.getChildren().addAll(mainContainer);
-        Scene scene = new Scene(grid);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        /*
-        *************************** */
-
-
-        /*
-        Old Method
-
-
-        ViewsController mainContainer = new ViewsController();
-
-        mainContainer.loadScreen(MainView.screen1ID, MainView.screen1File);
-        mainContainer.loadScreen(MainView.screen2ID, MainView.screen2File);
-
-        mainContainer.setScreen(MainView.screen1ID);
-        MainView.primaryStage = primaryStage;
-        Group root = new Group();
-        root.getChildren().addAll(mainContainer);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        */
+        showLoginView(primaryStage, true, multiControl);
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    public static Stage getMainStage(){
-        return primaryStage;
+    public void showLoginView(Stage prevStage, Boolean start, MulticastController multiControl) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("Login View");
+            GridPane myPane;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.LoginViewFXML));
+            myPane = loader.load();
+            Scene scene = new Scene(myPane);
+            stage.setScene(scene);
+
+            LogInController controller = loader.getController();
+            controller.setPrevStage(stage);
+            controller.setMainView(this);
+            controller.setMultiControl(multiControl);
+            controller.setCredentialsRetriever(new HashedUserCredentialsRetriever());
+            controller.setCredentialSaver(new HashedUserCredentialsSaver());
+            controller.setPrevStage(primaryStage);
+
+            if (!start) {
+                prevStage.close();
+                multiControl.stopAll();
+            }
+
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    public void showCommunicationView(Stage prevStage, String username, String port, MulticastController multiControl){
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("Communication View");
+            GridPane myPane;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.CommunicationViewFXML));
+            myPane = loader.load();
+            Scene scene = new Scene(myPane);
+            stage.setScene(scene);
+
+            CommunicationController controller = loader.getController();
+            User localUser = new User(username, InetAddress.getByName("127.0.0.1"), Integer.parseInt(port), User.typeConnect.CONNECTED);
+
+            controller.setModel(this.userList);
+            controller.setPrevStage(stage);
+            controller.setListener(new LazyCommunicationControllerListener() );
+            controller.setLocalUser(localUser);
+            controller.setMainView(this);
+            controller.setMultiControl(multiControl);
+
+            (new Thread(){
+                public void run() {
+                    controller.enableReception();
+                }
+            }).start();
+
+            prevStage.close();
+            stage.show();
+            multiControl.startAll(localUser);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
 }

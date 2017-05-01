@@ -16,7 +16,8 @@
             <Font size="18.0" />
          </font></Text>
     
-       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="84.0" text="User Name" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+
+       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="User Name" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1">
          <font>
             <Font size="14.0" />
          </font></Label>
@@ -26,7 +27,8 @@
             <Insets right="10.0" />
          </padding></TextField>
     
-       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="79.0" text="Password" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
+
+       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="210.0" text="Password" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2">
          <font>
             <Font size="14.0" />
          </font></Label>
@@ -39,9 +41,9 @@
             <Button onAction="#onSignIn" prefHeight="43.0" prefWidth="105.0" text="Sign In" />
               </children>
        </HBox>
-   
        <Text fx:id="actiontarget" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      <Label fx:id="incorrectPassword" prefHeight="22.0" prefWidth="466.0" text="The password/login you entered does not match our records" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+           <TextField fx:id="port" GridPane.columnIndex="1" GridPane.rowIndex="3" /> 
+     <Label fx:id="incorrectPassword" prefHeight="22.0" prefWidth="466.0" text="The password/login you entered does not match our records" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <font>
             <Font size="16.0" />
          </font>
@@ -54,6 +56,7 @@
       <Label fx:id="userCorrectlyRegistered" prefHeight="22.0" prefWidth="466.0" text="User correctly registered, you can now Sign in" textFill="#0019ff" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <font>
             <Font size="16.0" />
+
          </font>
       </Label>
    </children>

@@ -4,30 +4,28 @@ import controller.CommunicationController;
 import controller.LazyCommunicationControllerListener;
 import controller.LogInController;
 import controller.MulticastController;
+
+import model.HashedUserCredentialsRetriever;
+import model.HashedUserCredentialsSaver;
+import model.User;
+import model.UserList;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import model.User;
-import model.UserList;
 
 import java.io.IOException;
 import java.net.InetAddress;
 
 public class MainView extends Application {
-
-	/**
-	 * Be careful, depending on the IDE you have to use the relative
-	 * or absolute path. Don't forget to add the resources folder
-	 * to your java build path.
-	 */
+ 
     private static String LoginViewFXML = "/fxml/LogInView.fxml";
     private static String CommunicationViewFXML = "/fxml/CommunicationView.fxml";
 
     private UserList userList;
     private MulticastController multiControl;
-
 
     public MainView() {
     }
@@ -37,7 +35,6 @@ public class MainView extends Application {
         System.setProperty("java.net.preferIPv4Stack", "true");
         userList = new UserList() ;
         multiControl = new MulticastController(userList);
-
 
         showLoginView(primaryStage, true, multiControl);
     }
@@ -60,6 +57,9 @@ public class MainView extends Application {
             controller.setPrevStage(stage);
             controller.setMainView(this);
             controller.setMultiControl(multiControl);
+            controller.setCredentialsRetriever(new HashedUserCredentialsRetriever());
+            controller.setCredentialSaver(new HashedUserCredentialsSaver());
+            controller.setPrevStage(primaryStage);
 
             if (!start) {
                 prevStage.close();

@@ -22,9 +22,7 @@ import model.UserCredentialsSaver;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class LogInController implements Initializable {
-	
-    @FXML
-    private Text actiontarget;
+
     @FXML
     private PasswordField passwordField;
     @FXML
@@ -35,7 +33,7 @@ public class LogInController implements Initializable {
     private Label userAlreadyRegistered;
     @FXML
     private Label userCorrectlyRegistered;
-
+    @FXML
     private TextField port;
 
     private Stage prevStage;
@@ -77,7 +75,6 @@ public class LogInController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle rb) {
-        actiontarget.setText("");
     }
 
     @FXML
@@ -96,6 +93,9 @@ public class LogInController implements Initializable {
         String password = this.passwordField.getText();
 
         if (credentialsRetriever.checkPasswordCorrect(hashed, password)) {
+            System.out.println(this.prevStage);
+            System.out.println(username.getText());
+            System.out.println(port.getText());
             this.mainView.showCommunicationView(this.prevStage, username.getText(), port.getText(), multiControl);
         }
         else {

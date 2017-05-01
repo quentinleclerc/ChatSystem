@@ -59,7 +59,6 @@ public class MainView extends Application {
             controller.setMultiControl(multiControl);
             controller.setCredentialsRetriever(new HashedUserCredentialsRetriever());
             controller.setCredentialSaver(new HashedUserCredentialsSaver());
-            controller.setPrevStage(primaryStage);
 
             if (!start) {
                 prevStage.close();

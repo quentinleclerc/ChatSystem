@@ -2,9 +2,9 @@ package controller;
 
 import javafx.application.Platform;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import javafx.scene.control.*;
 
@@ -15,7 +15,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -32,6 +31,8 @@ public class CommunicationController implements Initializable {
 	@FXML
 	TextField recipientField;
 	@FXML
+	TextField status;
+	@FXML
 	TextArea filDiscussion;
 
 	private CommunicationControllerListener listener;
@@ -46,6 +47,8 @@ public class CommunicationController implements Initializable {
 	private MainView mainView;
 
 	private MulticastController multiControl;
+
+	private UserDiscussionLink userDiscLink;
 
 	public CommunicationController() {
 		System.out.println("Communication Controller initialized.");
@@ -64,54 +67,78 @@ public class CommunicationController implements Initializable {
 	private void initModel() {
 		listViewUser.setItems(model.getObsUsersList());
 		listViewUser.setCellFactory((list) -> new ListCell<User>() {
-            @Override
-            protected void updateItem(User item, boolean empty) {
-                super.updateItem(item, empty);
+			@Override
+			protected void updateItem(User item, boolean empty) {
+				super.updateItem(item, empty);
 
-                if (item == null || empty) {
-                    setText(null);
-                } else {
-                    setText(item.getPseudo() + " ["+ item.getIP() +":" +item.getPort()+ "]");
-                }
-            }
-        });
+				if (item == null || empty) {
+					setText(null);
+				} else {
+					setText(item.getPseudo() + " ["+ item.getIP() +":" +item.getPort()+ "]");
+				}
+			}
+		});
 		listViewUser.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if(newSelection != null) {
 				send.setDisable(false);
 				recipientField.setText(newSelection.getPseudo());
 				System.out.println(newSelection);
-				User recipient = UserList.getInstance().getUserByUsername(newSelection);
-				
-				MessageQueue discussion = UserDiscussionLink.getInstance().getUserMessageQueue(recipient);
+
+				Discussion discussion = this.userDiscLink.getUserMessageQueue(getSelectedRecipient());
 				System.out.println(discussion.toString());
-				filDiscussion.setText(discussion.toString());
+
+				Platform.runLater(() -> filDiscussion.setText(discussion.toString()));
 			}
 		});
 	}
 
 	@FXML
-	void onDisconnect(ActionEvent event) throws IOException {
+	public void onDisconnect(ActionEvent event) {
+		this.model.clearAll();
 		this.mainView.showLoginView(this.prevStage, false, multiControl);
-		this.model.remove(localUser);
-    }
+	}
 
 	private User getSelectedRecipient() {
 		return listViewUser.getSelectionModel().getSelectedItem();
 	}
 
-	@FXML
-	void onSend(ActionEvent event) {
-
+	private void onSend(){
 
 		String message = messageToSend.getText();
 		User selectedRecipient = getSelectedRecipient();
-    MessageQueue discussion = UserDiscussionLink.getInstance().getUserMEssageQueue(recipient);
-    discussion.addMessage(message, localUser);
-    
-    listener.sendMessage(message, selectedRecipient);
+		Discussion discussion = this.userDiscLink.getUserMessageQueue(selectedRecipient);
+		discussion.addMessage(message, localUser);
+
+		listener.sendMessage(new Message(message, localUser), selectedRecipient);
 		messageToSend.clear();
-    
-		Platform.runLater(() -> filDiscussion.setText(discussion.toString());
+
+		Platform.runLater(() -> filDiscussion.setText(discussion.toString()));
+	}
+
+	@FXML
+	public void onSendClicked(MouseEvent event) {
+		this.onSend();
+	}
+
+	@FXML
+	public void onSendEnter(KeyEvent ke) {
+		if(ke.getCode().equals(KeyCode.ENTER) && getSelectedRecipient() != null){
+			this.onSend();
+			listViewUser.requestFocus();
+		}
+	}
+
+	@FXML
+	public void onStatusClicked(MouseEvent event){
+		status.setText("");
+	}
+
+	@FXML
+	public void onStatusEnter(KeyEvent ke){
+		if(ke.getCode().equals(KeyCode.ENTER)){
+			localUser.setStatut(status.getText());
+			listViewUser.requestFocus();
+		}
 	}
 
 
@@ -121,17 +148,14 @@ public class CommunicationController implements Initializable {
 	}
 
 	public void enableReception() {
-		while(true){
-			discussion.addMessage(msgReceived);
-			filDiscussion.setText(discussion.toString());
 
+		while(true){
 			Message msgReceived = listener.receiveMessage(this.localUser);
-      UserDiscussionLink udl = UserDiscussionLink.getInstance();
-      MessageQueue discussion = udl.getUserMessageQueue(msgReceived.getEmetteur());
-      discussion.addMessage(msgReceived)
-      
+			Discussion discussion = this.userDiscLink.getUserMessageQueue(msgReceived.getEmetteur());
+			discussion.addMessage(msgReceived);
+
 			String msgText = msgReceived.getData();
-      Platform.runLater(() -> filDiscussion.setText(discussion.toString());
+			Platform.runLater(() -> filDiscussion.setText(discussion.toString()));
 		}
 	}
 
@@ -150,5 +174,9 @@ public class CommunicationController implements Initializable {
 
 	public void setMultiControl(MulticastController multiControl) {
 		this.multiControl = multiControl;
+	}
+
+	public void setUserDiscussionLink(UserDiscussionLink userDiscussionLink) {
+		this.userDiscLink = userDiscussionLink;
 	}
 }

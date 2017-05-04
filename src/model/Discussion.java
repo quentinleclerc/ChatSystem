@@ -3,11 +3,14 @@ package model;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class MessageQueue {
+public class Discussion {
+
+    private final User localUser;
 
     private ConcurrentLinkedQueue<Message> discussion;
 
-    public MessageQueue() {
+    public Discussion(User localUser) {
+        this.localUser = localUser;
         this.discussion = new ConcurrentLinkedQueue<>();
     }
 
@@ -30,7 +33,7 @@ public class MessageQueue {
 
         while (listIterator.hasNext()) {
 			Message message = listIterator.next();
-			if(message.getEmetteur() == UserList.getInstance().getLocalUser())
+			if(message.getEmetteur().equals(localUser))
 				str += "[Moi]" + message.getData() + "\n";
 			else
 				str += "["+ message.getEmetteur().getPseudo() +"]" + message.getData() + "\n";

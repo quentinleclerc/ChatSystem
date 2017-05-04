@@ -5,10 +5,7 @@ import controller.LazyCommunicationControllerListener;
 import controller.LogInController;
 import controller.MulticastController;
 
-import model.HashedUserCredentialsRetriever;
-import model.HashedUserCredentialsSaver;
-import model.User;
-import model.UserList;
+import model.*;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -60,6 +57,7 @@ public class MainView extends Application {
             controller.setCredentialsRetriever(new HashedUserCredentialsRetriever());
             controller.setCredentialSaver(new HashedUserCredentialsSaver());
 
+
             if (!start) {
                 prevStage.close();
                 multiControl.stopAll();
@@ -84,13 +82,16 @@ public class MainView extends Application {
 
             CommunicationController controller = loader.getController();
             User localUser = new User(username, InetAddress.getByName("127.0.0.1"), Integer.parseInt(port), User.typeConnect.CONNECTED);
-
+            UserDiscussionLink discussionLink = new UserDiscussionLink(localUser);
             controller.setModel(this.userList);
             controller.setPrevStage(stage);
             controller.setListener(new LazyCommunicationControllerListener() );
             controller.setLocalUser(localUser);
             controller.setMainView(this);
+            multiControl.setUserDiscLink(discussionLink);
             controller.setMultiControl(multiControl);
+            controller.setUserDiscussionLink(discussionLink);
+
 
             (new Thread(){
                 public void run() {

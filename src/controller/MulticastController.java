@@ -1,6 +1,7 @@
 package controller;
 
 import model.User;
+import model.UserDiscussionLink;
 import model.UserList;
 import network.MulticastReceiver;
 import network.MulticastSender;
@@ -18,13 +19,13 @@ public class MulticastController {
 
     // Instance of MulticastReceiver
     private MulticastReceiver mReceiver;
-    // Instance of MulticastSender
-    private MulticastSender mSender;
-    // Thread used to start and stop the emission/reception of data on the channel
+    // Threads used to start and stop the emission/reception of data on the channel
     private Thread multiSenderThread;
     private Thread multiReceiverThread;
 
     private UserList model;
+
+    private UserDiscussionLink userDiscLink;
 
 
     public MulticastController(UserList model) {
@@ -36,12 +37,11 @@ public class MulticastController {
         try {
             System.out.println("Main controller creating a thread for MulticastServer...");
 
-
-            multiSenderThread = new Thread(mSender = new MulticastSender(ADR, PORT, SLEEP_TIME, localUser));
+            multiSenderThread = new Thread(new MulticastSender(ADR, PORT, SLEEP_TIME, localUser));
             multiSenderThread.start();
 
             System.out.println("Main controller creating a thread for MulticastClient...");
-            multiReceiverThread = new Thread(mReceiver = new MulticastReceiver(ADR, PORT, model));
+            multiReceiverThread = new Thread(mReceiver = new MulticastReceiver(ADR, PORT, model, userDiscLink));
 
             multiReceiverThread.start();
         }
@@ -61,9 +61,7 @@ public class MulticastController {
         multiSenderThread.interrupt();
     }
 
-	public static MulticastSender setmSender(MulticastSender mSender) {
-		MulticastController.mSender = mSender;
-		return mSender;
-	}
-
+    public void setUserDiscLink(UserDiscussionLink userDiscLink) {
+        this.userDiscLink = userDiscLink;
+    }
 }

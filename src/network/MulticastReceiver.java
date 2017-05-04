@@ -16,6 +16,7 @@ import java.util.Observer;
 
 public class MulticastReceiver implements Runnable, Observer, InterruptibleChannel {
 
+    private UserDiscussionLink userDiscLink;
     // multicast group adress where the message is received
     private InetAddress INET_ADDR;
     // port to receive
@@ -26,20 +27,13 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
     private UserList users;
 
 
-    public MulticastReceiver(String adr, int port, UserList userList) throws IOException {
+    public MulticastReceiver(String adr, int port, UserList userList, UserDiscussionLink userDiscLink) throws IOException {
         this.INET_ADDR = InetAddress.getByName(adr);
         this.PORT = port;
         this.socket = new MulticastSocket(port);
         this.users = userList;
+        this.userDiscLink = userDiscLink;
         System.out.println("MulticastReceiver started, users = "+ users);
-    }
-
-    public int getPort() {
-        return PORT;
-    }
-
-    public void setPort(int port) {
-        PORT = port;
     }
 
     public void run() {
@@ -85,7 +79,7 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
                 Platform.runLater(() -> {
                     users.add(userReceived);
                 });
-                UserDiscussionLink.getInstance().addUserDiscussion(userReceived);
+                this.userDiscLink.addDiscussion(userReceived);
                 System.out.println("User "+ userReceived.getPseudo() + " added to connected users list");
                 System.out.println("Creation of a discussion for the user " + userReceived.getPseudo());
             }

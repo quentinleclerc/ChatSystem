@@ -12,10 +12,15 @@ import java.net.Socket;
 
 public class LazyCommunicationControllerListener implements CommunicationControllerListener {
 
+    /*
+    TODO : create two different classes for sending and receinving
+    TODO : correctly kill the receiver on disconnect, otherwise there is a bind error if the same port is use
+     */
+
+
     @Override
-    public void sendMessage(String message, User selectedRecipient) {
-        System.out.println(message + " to " + selectedRecipient);
-        Message msg = new Message(message, localUser);
+    public void sendMessage(Message msg, User selectedRecipient) {
+        System.out.println(msg + " to " + selectedRecipient);
 
         try {
             System.out.println(selectedRecipient.getIP().toString() + selectedRecipient.getPort());

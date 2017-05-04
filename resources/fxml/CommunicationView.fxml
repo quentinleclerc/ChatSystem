@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
 <?import javafx.scene.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CommunicationController">
+<GridPane fx:id="hBOX" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="636.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CommunicationController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0069580078125" minWidth="10.0" prefWidth="347.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="291.0" minWidth="10.0" prefWidth="253.0" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints maxHeight="193.0" minHeight="10.0" prefHeight="60.41238021850586" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="193.0" minHeight="1.8625411987304688" prefHeight="1.8625411987304688" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="193.0" minHeight="10.0" prefHeight="56.13745880126953" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="193.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="193.0" minHeight="1.8625411987304688" prefHeight="35.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="193.0" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="347.0" minHeight="10.0" prefHeight="304.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
@@ -23,7 +25,6 @@
             <Font size="25.0" />
          </font>
       </Text>
-      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
       <Button fx:id="disconnect" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onDisconnect" prefHeight="28.0" prefWidth="238.0" text="Disconnect" textFill="#e37b7b" GridPane.columnIndex="1">
          <font>
             <Font name="System Bold Italic" size="14.0" />
@@ -35,15 +36,15 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="312.0">
                <children>
-                  <TextArea fx:id="filDiscussion" layoutX="-1.0" mouseTransparent="true" pickOnBounds="false" prefHeight="246.0" prefWidth="347.0" />
+                  <TextArea fx:id="filDiscussion" layoutX="-1.0" mouseTransparent="true" pickOnBounds="false" prefHeight="257.0" prefWidth="365.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <ToolBar prefHeight="39.0" prefWidth="345.0">
+                  <ToolBar prefHeight="39.0" prefWidth="363.0">
                      <items>
-                        <TextField fx:id="messageToSend" prefHeight="27.0" prefWidth="214.0" GridPane.rowIndex="2" />
-                        <Button fx:id="send" mnemonicParsing="false" onAction="#onSend" text="Send" />
+                        <TextField fx:id="messageToSend" onKeyPressed="#onSendEnter" prefHeight="27.0" prefWidth="214.0" GridPane.rowIndex="2" />
+                        <Button fx:id="send" mnemonicParsing="false" onMouseClicked="#onSendClicked" text="Send" />
                      </items>
                   </ToolBar>
                </children>
@@ -51,12 +52,13 @@
         </items>
       </SplitPane>
       <AmbientLight color="CHARTREUSE" lightOn="true" GridPane.rowIndex="2" />
-      <TextField fx:id="recipientField" mouseTransparent="true" pickOnBounds="false" prefHeight="51.0" prefWidth="347.0" promptText="Select a recipient ..." GridPane.rowIndex="2" />
+      <TextField fx:id="recipientField" editable="false" mouseTransparent="true" pickOnBounds="false" prefHeight="60.0" prefWidth="366.0" promptText="Select a recipient ..." GridPane.rowIndex="2" />
       <ListView fx:id="listViewUser" prefHeight="0.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Text fill="#2916d7" strokeType="OUTSIDE" strokeWidth="0.0" text="Connected Users " textAlignment="CENTER" wrappingWidth="253.00341796875" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
+      <TextField fx:id="status" onKeyPressed="#onStatusEnter" onMouseClicked="#onStatusClicked" prefHeight="49.0" prefWidth="370.0" promptText="Tell us how are you feeling today ..." GridPane.rowIndex="1" />
    </children>
 </GridPane>

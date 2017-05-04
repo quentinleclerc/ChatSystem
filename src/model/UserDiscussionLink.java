@@ -4,28 +4,22 @@ import java.util.Hashtable;
 
 public class UserDiscussionLink {
 	
-	private Hashtable<User, MessageQueue> userMessages;
+	private Hashtable<User, Discussion> userMessages;
 	
-	private static  UserDiscussionLink INSTANCE = null;
-	
-	private UserDiscussionLink(){
-		userMessages = new Hashtable<User, MessageQueue>();
+	private User localUser;
+
+	public UserDiscussionLink(User localUser){
+		this.localUser = localUser;
+		userMessages = new Hashtable<User, Discussion>();
 	}
 	
-    public synchronized static UserDiscussionLink getInstance(){
-    	if(INSTANCE == null){
-    		INSTANCE = new UserDiscussionLink();
-    	}
-    		return INSTANCE;
-    }
-	
-	public void addUserDiscussion(User usr){
+	public void addDiscussion(User usr){
 		if(!userMessages.containsKey(usr)){
-			userMessages.put(usr, new MessageQueue());
+			userMessages.put(usr, new Discussion(localUser));
 		}
 	}
 	
-	public boolean removeCouple(User usr, MessageQueue mq){
+	public boolean removeCouple(User usr, Discussion mq){
 		return userMessages.remove(usr, mq);
 	}
 	
@@ -33,7 +27,7 @@ public class UserDiscussionLink {
 		userMessages.remove(usr);
 	}
 	
-	public synchronized MessageQueue getUserMessageQueue(User usr){
+	public synchronized Discussion getUserMessageQueue(User usr){
 		//return null if the user is not in the HashMap
 		return userMessages.get(usr);
 	}
@@ -42,11 +36,11 @@ public class UserDiscussionLink {
 		return userMessages.containsKey(user);
 	}
 	
-	public boolean containsMQ(MessageQueue mq) {
+	public boolean containsMQ(Discussion mq) {
 		return userMessages.contains(mq);
 	}
 	
-	public void eraseAllDiscussion(){
+	public void eraseAllDiscussion() {
 		userMessages.clear();
 	}
 

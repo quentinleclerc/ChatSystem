@@ -5,7 +5,7 @@ import model.User;
 
  interface CommunicationControllerListener {
 
-    void sendMessage(String message, User selectedRecipient);
+    void sendMessage(Message message, User selectedRecipient);
     Message receiveMessage(User me);
 
 }

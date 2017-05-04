@@ -115,14 +115,22 @@ public class User implements Serializable {
 		this.etat = etat;
 	}
 
-	public boolean equals(Object user){
-		return this.getPseudo().contentEquals(((User)user).getPseudo());
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		User user = (User) o;
+
+		return pseudo.equals(user.pseudo);
+
 	}
 
+	@Override
 	public int hashCode() {
-		return this.pseudo.hashCode();
+		return pseudo.hashCode();
 	}
-
 }
 
 

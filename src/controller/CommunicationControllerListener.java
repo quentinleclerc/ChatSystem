@@ -3,9 +3,9 @@ package controller;
 import model.Message;
 import model.User;
 
-public interface CommunicationControllerListener {
+ interface CommunicationControllerListener {
 
-    public void sendMessage(String message, String selectedRecipient);
-    public Message receiveMessage(User me);
+    void sendMessage(String message, User selectedRecipient);
+    Message receiveMessage(User me);
 
 }

@@ -1,106 +1,117 @@
 package controller;
 
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.User;
-import model.UserList;
 import view.MainView;
 
-public class LogInController implements Initializable, ControlledScreen {
+import model.UserCredentialsRetriever;
+import model.UserCredentialsSaver;
 
-	private ViewsController myController;
-	@FXML
-	private Text actiontarget;
-	@FXML
-	private PasswordField passwordField;
-	@FXML
-	private TextField username;
-	@FXML
-	private TextField port;
-	@FXML
-	private Button signIn;
+import org.mindrot.jbcrypt.BCrypt;
 
-	private Stage prevStage;
+public class LogInController implements Initializable {
+
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private TextField username;
+    @FXML
+    private Label incorrectPassword;
+    @FXML
+    private Label userAlreadyRegistered;
+    @FXML
+    private Label userCorrectlyRegistered;
+    @FXML
+    private TextField port;
+
+    private Stage prevStage;
+    private UserCredentialsRetriever credentialsRetriever;
+    private UserCredentialsSaver credentialSaver;
+
+    private MainView mainView;
+
+    private MulticastController multiControl;
+  
+    public LogInController(){
+        System.out.println("LogIn Controller initialized.");
+    }
+
+    public void setPrevStage(Stage stage){
+        this.prevStage = stage;
+    }
 
 
-	public LogInController() {
-		System.out.println("LogIn Controller initialized.");
-	}
+    public void setUsername(String username){
+        this.username.setText(username);
+    }
 
-	public void setPrevStage(Stage stage){
-		this.prevStage = stage;
-	}
+    public void setCredentialsRetriever(UserCredentialsRetriever credentialsRetriever){
+        this.credentialsRetriever = credentialsRetriever;
+    }
 
-	@Override
-	public void initialize(URL location, ResourceBundle rb) {
-		actiontarget.setText("");
-		signIn.disableProperty().bind(
-				username.textProperty().isEmpty().or(
-						passwordField.textProperty().isEmpty().or(
-								port.textProperty().isEmpty()
-								)));
-	}
+    public void setCredentialSaver(UserCredentialsSaver credentialSaver){
+        this.credentialSaver = credentialSaver;
+    }
+  
+    public void setMainView(MainView mainView) {
+        this.mainView = mainView;
+    }
 
-	@Override
-	public void setScreenParent(ViewsController screenParent){
-		myController = screenParent;
-	}
+    public void setMultiControl(MulticastController multiControl) {
+        this.multiControl = multiControl;
+    }
 
-	@FXML
-	void onSignIn(ActionEvent event) throws IOException {
-		//myController.setScreen(MainView.screen2ID);
-		Stage stage = new Stage();
-		stage.setTitle("Communication View");
-		GridPane myPane;
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.CommunicationViewFXML));
-		myPane = loader.load();
-		Scene scene = new Scene(myPane);
-		stage.setScene(scene);
+    @Override
+    public void initialize(URL location, ResourceBundle rb) {
+    }
 
-		// Get communication controller to set the prevStage
-		CommunicationController controller = loader.getController();
-		controller.setPrevStage(stage);
-		controller.setListener(new LazyCommunicationControllerListener() );
+    @FXML
+    void onSignUp(ActionEvent event) {
+        if (this.credentialsRetriever.checkUserRegistered(this.username.getText())) {
+            setVisible(this.userAlreadyRegistered);
+        } else {
+            this.credentialSaver.saveUserCredentials(this.username.getText(), this.passwordField.getText());
+            setVisible(userCorrectlyRegistered);
+        }
+    }
 
-		User localUser = new User(username.getText(), InetAddress.getByName("127.0.0.1"), Integer.parseInt(port.getText()), User.typeConnect.CONNECTED);
-		UserList.getInstance().setLocalUser(localUser);
+    @FXML
+    void onSignIn(ActionEvent event) throws IOException {
+        String hashed = credentialsRetriever.getHashedPassword(this.username.getText());
+        String password = this.passwordField.getText();
 
-		(new Thread(){
-			public void run() {
-				controller.enableReception();
-			}
-		}).start();
-
-		prevStage.close();
-		stage.show();
-		MulticastController.startAll(username.getText());
-	}
-
-	public void setUsername(String username){
-		this.username.setText(username);
-	}
-
-	public String getUsername(){
-		return this.username.getText();
-	}
-	
-	public ViewsController getController(){
-		return myController;
-	}
-
+        if (credentialsRetriever.checkPasswordCorrect(hashed, password)) {
+            System.out.println(this.prevStage);
+            System.out.println(username.getText());
+            System.out.println(port.getText());
+            this.mainView.showCommunicationView(this.prevStage, username.getText(), port.getText(), multiControl);
+        }
+        else {
+            setVisible(incorrectPassword);
+        }
+    }
+  
+    private void setVisible(Label lab) {
+        incorrectPassword.setVisible(false);
+        userAlreadyRegistered.setVisible(false);
+        userCorrectlyRegistered.setVisible(false);
+        lab.setVisible(true);
+    }
 }
+
+
+
 

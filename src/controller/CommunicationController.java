@@ -1,7 +1,13 @@
 package controller;
 
 import javafx.application.Platform;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+
 import javafx.scene.control.*;
+
 import javafx.stage.Stage;
 import model.*;
 import view.MainView;
@@ -26,7 +32,7 @@ public class CommunicationController implements Initializable {
 	@FXML
 	TextField recipientField;
 	@FXML
-	TextArea discussion;
+	TextArea filDiscussion;
 
 	private CommunicationControllerListener listener;
 
@@ -74,6 +80,11 @@ public class CommunicationController implements Initializable {
 				send.setDisable(false);
 				recipientField.setText(newSelection.getPseudo());
 				System.out.println(newSelection);
+				User recipient = UserList.getInstance().getUserByUsername(newSelection);
+				
+				MessageQueue discussion = UserDiscussionLink.getInstance().getUserMessageQueue(recipient);
+				System.out.println(discussion.toString());
+				filDiscussion.setText(discussion.toString());
 			}
 		});
 	}
@@ -90,10 +101,17 @@ public class CommunicationController implements Initializable {
 
 	@FXML
 	void onSend(ActionEvent event) {
+
+
 		String message = messageToSend.getText();
 		User selectedRecipient = getSelectedRecipient();
-		Platform.runLater(() -> discussion.appendText("\n" + message));
-		listener.sendMessage(message, selectedRecipient);
+    MessageQueue discussion = UserDiscussionLink.getInstance().getUserMEssageQueue(recipient);
+    discussion.addMessage(message, localUser);
+    
+    listener.sendMessage(message, selectedRecipient);
+		messageToSend.clear();
+    
+		Platform.runLater(() -> filDiscussion.setText(discussion.toString());
 	}
 
 
@@ -104,9 +122,16 @@ public class CommunicationController implements Initializable {
 
 	public void enableReception() {
 		while(true){
+			discussion.addMessage(msgReceived);
+			filDiscussion.setText(discussion.toString());
+
 			Message msgReceived = listener.receiveMessage(this.localUser);
+      UserDiscussionLink udl = UserDiscussionLink.getInstance();
+      MessageQueue discussion = udl.getUserMessageQueue(msgReceived.getEmetteur());
+      discussion.addMessage(msgReceived)
+      
 			String msgText = msgReceived.getData();
-			Platform.runLater(() -> discussion.appendText("\n" + msgText));
+      Platform.runLater(() -> filDiscussion.setText(discussion.toString());
 		}
 	}
 

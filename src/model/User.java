@@ -115,6 +115,7 @@ public class User implements Serializable {
 		this.etat = etat;
 	}
 
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

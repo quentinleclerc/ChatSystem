@@ -2,6 +2,7 @@ package network;
 
 import javafx.application.Platform;
 import model.User;
+import model.UserDiscussionLink;
 import model.UserList;
 
 import java.io.*;
@@ -84,9 +85,9 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
                 Platform.runLater(() -> {
                     users.add(userReceived);
                 });
-
-
-                System.out.println("User "+ userReceived + " added to connected users list");
+                UserDiscussionLink.getInstance().addUserDiscussion(userReceived);
+                System.out.println("User "+ userReceived.getPseudo() + " added to connected users list");
+                System.out.println("Creation of a discussion for the user " + userReceived.getPseudo());
             }
         }
         else {

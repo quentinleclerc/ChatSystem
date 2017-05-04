@@ -15,7 +15,7 @@ public class LazyCommunicationControllerListener implements CommunicationControl
     @Override
     public void sendMessage(String message, User selectedRecipient) {
         System.out.println(message + " to " + selectedRecipient);
-        Message msg = new Message(message);
+        Message msg = new Message(message, localUser);
 
         try {
             System.out.println(selectedRecipient.getIP().toString() + selectedRecipient.getPort());

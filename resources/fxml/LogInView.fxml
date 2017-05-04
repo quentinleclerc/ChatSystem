@@ -42,6 +42,7 @@
               <children>
               <Button onAction="#onSignUp" prefHeight="43.0" prefWidth="105.0" text="Sign Up" />
             <Button onAction="#onSignIn" prefHeight="43.0" prefWidth="105.0" text="Sign In" />
+
               </children>
        </HBox> 
      <Label fx:id="incorrectPassword" prefHeight="22.0" prefWidth="486.0" text="The password/login you entered does not match our records" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">

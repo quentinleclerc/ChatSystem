@@ -18,6 +18,8 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import communication.*;
+
 public class CommunicationController implements Initializable {
 
 	@FXML
@@ -151,7 +153,7 @@ public class CommunicationController implements Initializable {
 
 		while(true){
 			Message msgReceived = listener.receiveMessage(this.localUser);
-			Discussion discussion = this.userDiscLink.getUserMessageQueue(msgReceived.getEmetteur());
+			Discussion discussion = this.userDiscLink.getUserMessageQueue(msgReceived.getSender());
 			discussion.addMessage(msgReceived);
 
 			String msgText = msgReceived.getData();

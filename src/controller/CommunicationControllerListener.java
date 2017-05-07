@@ -1,7 +1,6 @@
 package controller;
 
-import model.Message;
-import model.User;
+import communication.*;
 
  interface CommunicationControllerListener {
 

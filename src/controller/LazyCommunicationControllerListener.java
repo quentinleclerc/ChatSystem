@@ -1,8 +1,7 @@
 package controller;
 
 
-import model.Message;
-import model.User;
+import communication.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -1,6 +1,6 @@
 package network;
 
-import model.User;
+import communication.*;
 import java.io.*;
 import java.net.*;
 import static java.lang.Thread.sleep;

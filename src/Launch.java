@@ -1,10 +1,7 @@
-import controller.MulticastController;
-import model.User;
-import model.UserDiscussionLink;
+
+
 import model.UserList;
 import view.MainView;
-
-import java.net.InetAddress;
 
 public class Launch {
 

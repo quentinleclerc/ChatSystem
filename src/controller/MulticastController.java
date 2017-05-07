@@ -1,6 +1,6 @@
 package controller;
 
-import model.User;
+import communication.*;
 import model.UserDiscussionLink;
 import model.UserList;
 import network.MulticastReceiver;

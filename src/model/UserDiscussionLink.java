@@ -1,5 +1,6 @@
 package model;
 
+import communication.*;
 import java.util.Hashtable;
 
 public class UserDiscussionLink {

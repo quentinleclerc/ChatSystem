@@ -1,6 +1,8 @@
 package model;
 
 
+import communication.*;
+
 import java.util.*;
 
 import javafx.collections.FXCollections;

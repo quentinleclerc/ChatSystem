@@ -5,6 +5,7 @@ import controller.LazyCommunicationControllerListener;
 import controller.LogInController;
 import controller.MulticastController;
 
+import communication.*;
 import model.*;
 
 import javafx.application.Application;

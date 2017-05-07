@@ -2,6 +2,7 @@ package controller;
 
 import javafx.application.Platform;
 
+import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -37,12 +38,11 @@ public class CommunicationController implements Initializable {
 	@FXML
 	TextArea filDiscussion;
 
-	private CommunicationControllerListener listener;
+	private MessageSender sender;
 
 	private Stage prevStage;
 
-
-	protected UserList model;
+	protected ObservableList<User> model;
 
 	private User localUser;
 
@@ -67,7 +67,7 @@ public class CommunicationController implements Initializable {
 
 
 	private void initModel() {
-		listViewUser.setItems(model.getObsUsersList());
+		listViewUser.setItems(model);
 		listViewUser.setCellFactory((list) -> new ListCell<User>() {
 			@Override
 			protected void updateItem(User item, boolean empty) {
@@ -96,7 +96,7 @@ public class CommunicationController implements Initializable {
 
 	@FXML
 	public void onDisconnect(ActionEvent event) {
-		this.model.clearAll();
+		this.model.clear();
 		this.mainView.showLoginView(this.prevStage, false, multiControl);
 	}
 
@@ -105,16 +105,12 @@ public class CommunicationController implements Initializable {
 	}
 
 	private void onSend(){
-
-		String message = messageToSend.getText();
 		User selectedRecipient = getSelectedRecipient();
-		Discussion discussion = this.userDiscLink.getUserMessageQueue(selectedRecipient);
-		discussion.addMessage(message, localUser);
+		Message msg = new Message(messageToSend.getText(), localUser);
 
-		listener.sendMessage(new Message(message, localUser), selectedRecipient);
+		sender.sendMessage(msg, selectedRecipient);
 		messageToSend.clear();
-
-		Platform.runLater(() -> filDiscussion.setText(discussion.toString()));
+		updateDiscussion(msg, selectedRecipient);
 	}
 
 	@FXML
@@ -143,22 +139,11 @@ public class CommunicationController implements Initializable {
 		}
 	}
 
+	public void updateDiscussion(Message msg, User recipient) {
+		Discussion discussion = this.userDiscLink.getUserMessageQueue(recipient);
+		discussion.addMessage(msg);
+		Platform.runLater(() -> filDiscussion.setText(discussion.toString()));
 
-	public void setListener(CommunicationControllerListener listener) {
-		System.out.println("Listener correctly set");
-		this.listener = listener;
-	}
-
-	public void enableReception() {
-
-		while(true){
-			Message msgReceived = listener.receiveMessage(this.localUser);
-			Discussion discussion = this.userDiscLink.getUserMessageQueue(msgReceived.getSender());
-			discussion.addMessage(msgReceived);
-
-			String msgText = msgReceived.getData();
-			Platform.runLater(() -> filDiscussion.setText(discussion.toString()));
-		}
 	}
 
 	public void setLocalUser(User localUser) {
@@ -169,7 +154,7 @@ public class CommunicationController implements Initializable {
 		this.mainView = mainView;
 	}
 
-	public void setModel(UserList model) {
+	public void setModel(ObservableList<User> model) {
 		this.model = model;
 		initModel();
 	}
@@ -180,5 +165,9 @@ public class CommunicationController implements Initializable {
 
 	public void setUserDiscussionLink(UserDiscussionLink userDiscussionLink) {
 		this.userDiscLink = userDiscussionLink;
+	}
+
+	public void setSender(MessageSender sender) {
+		this.sender = sender;
 	}
 }

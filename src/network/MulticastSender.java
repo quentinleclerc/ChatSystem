@@ -45,7 +45,6 @@ public class MulticastSender implements Runnable {
             catch (InterruptedException e) {
                 System.out.println("Interrupted exception caught in sender");
                 sendDisconnect();
-                //Thread.currentThread().interrupt();
                 break;
             }
         }

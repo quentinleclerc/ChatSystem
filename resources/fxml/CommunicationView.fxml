@@ -10,8 +10,8 @@
 
 <GridPane fx:id="hBOX" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="636.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CommunicationController">
   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0069580078125" minWidth="10.0" prefWidth="347.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="291.0" minWidth="10.0" prefWidth="253.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0069580078125" minWidth="10.0" prefWidth="350.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="298.0" minWidth="10.0" prefWidth="286.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints maxHeight="193.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
@@ -20,12 +20,7 @@
       <RowConstraints maxHeight="347.0" minHeight="10.0" prefHeight="304.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Text fill="#1841a8" strokeType="OUTSIDE" strokeWidth="0.0" text="LET'S CHAT" textAlignment="CENTER" wrappingWidth="337.21875" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <font>
-            <Font size="25.0" />
-         </font>
-      </Text>
-      <Button fx:id="disconnect" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onDisconnect" prefHeight="28.0" prefWidth="238.0" text="Disconnect" textFill="#e37b7b" GridPane.columnIndex="1">
+      <Button fx:id="disconnect" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onDisconnect" prefHeight="28.0" prefWidth="238.0" text="Disconnect" textAlignment="CENTER" textFill="#e37b7b" GridPane.columnIndex="1">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font>
@@ -60,5 +55,11 @@
          </font>
       </Text>
       <TextField fx:id="status" onKeyPressed="#onStatusEnter" onMouseClicked="#onStatusClicked" prefHeight="49.0" prefWidth="370.0" promptText="Tell us how are you feeling today ..." GridPane.rowIndex="1" />
+      <TextField fx:id="otherStatus" mouseTransparent="true" pickOnBounds="false" prefHeight="41.0" prefWidth="286.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Text fx:id="welcomeField" fill="#1841a8" layoutX="360.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Welcome to CHAT :" wrappingWidth="351.00341796875">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
    </children>
 </GridPane>

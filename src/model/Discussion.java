@@ -26,7 +26,7 @@ public class Discussion {
     	Message message = new Message(msg, emetteur);
     	return discussion.add(message);
     }
-    
+  
     public String toString(){
     	String str = "";
 	    Iterator<Message> listIterator = discussion.iterator();

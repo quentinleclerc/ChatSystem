@@ -72,10 +72,16 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
 
         if (userState == User.typeConnect.CONNECTED) {
             if (users.contains(userReceived)) {
-                System.out.println("User already in connected users list");
-            }
-            else {
-
+            	User userInList = users.findUser(userReceived.getPseudo(), userReceived.getIP());
+            	if (!userReceived.getStatut().equals(userInList.getStatut()) ) {
+                    System.out.println("User already in connected users list BUT his pseudo has changed");
+            		System.out.println("OLD STATUT " + userReceived.getStatut() + " vs NEW STATUT" + userInList.getStatut());
+                	users.replace(userReceived, userReceived);
+            	} else {
+                	System.out.println("User already in connected users list");
+            	}
+            	
+            } else {
                 Platform.runLater(() -> {
                     users.add(userReceived);
                 });

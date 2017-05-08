@@ -91,6 +91,7 @@ public class MainView extends Application {
             multiControl.setUserDiscLink(discussionLink);
             controller.setMultiControl(multiControl);
             controller.setUserDiscussionLink(discussionLink);
+            controller.putNameinField(localUser);
 
 
             (new Thread(){

@@ -1,10 +1,4 @@
-import controller.MulticastController;
-import model.User;
-import model.UserDiscussionLink;
-import model.UserList;
 import view.MainView;
-
-import java.net.InetAddress;
 
 public class Launch {
 
@@ -12,8 +6,6 @@ public class Launch {
 
         // Avoid the join error when using on Mac
         System.setProperty("java.net.preferIPv4Stack", "true");
-
-        UserList userList = new UserList();
 
         (new Thread(){
             public void run() {

@@ -1,6 +1,7 @@
 package model;
 
 
+import java.net.InetAddress;
 import java.util.*;
 
 import javafx.collections.FXCollections;
@@ -46,12 +47,35 @@ public class UserList {
         obsUsersList.clear();
     }
 
+    public void replace(User oldUsr, User newUser){
+    	int i = users.indexOf(oldUsr);
+    	users.remove(i);
+    	users.add(i, newUser);
+    }
+    
     public int indexOf(User user) {
         return users.indexOf(user);
     }
 
     public boolean contains(User user) {
         return users.contains(user);
+    }
+    
+    public User getUser(int i){
+    	return users.get(i);
+    }
+    
+    public User findUser(String pseudo, InetAddress iP){
+    	Iterator<User> userIterator = users.iterator();
+    	User userFound = null;
+    	
+        while (userIterator.hasNext()) {
+        	User possibleUser = userIterator.next();
+        	if(possibleUser.getPseudo().equals(pseudo) && possibleUser.getIP().equals(iP)){
+        		userFound = possibleUser;
+        	}
+        }
+        return userFound;
     }
 
     public ObservableList<User> getObsUsersList() {

@@ -5,7 +5,7 @@ import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-
+import javafx.scene.text.Text;
 import javafx.scene.control.*;
 
 import javafx.stage.Stage;
@@ -19,7 +19,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CommunicationController implements Initializable {
-
+	@FXML
+	Text welcomeField;
 	@FXML
 	ListView<User> listViewUser;
 	@FXML
@@ -32,6 +33,8 @@ public class CommunicationController implements Initializable {
 	TextField recipientField;
 	@FXML
 	TextField status;
+	@FXML
+	TextField otherStatus;
 	@FXML
 	TextArea filDiscussion;
 
@@ -82,9 +85,14 @@ public class CommunicationController implements Initializable {
 			if(newSelection != null) {
 				send.setDisable(false);
 				recipientField.setText(newSelection.getPseudo());
-				System.out.println(newSelection);
+				
+				if(!getSelectedRecipient().getStatut().equals("")){
+					otherStatus.setText("[" + newSelection.getPseudo() + "] status : " + newSelection.getStatut());
+				} else{
+					otherStatus.setText("No status for " + newSelection.getPseudo());
+				}
 
-				Discussion discussion = this.userDiscLink.getUserMessageQueue(getSelectedRecipient());
+				Discussion discussion = this.userDiscLink.getUserMessageQueue(newSelection);
 				System.out.println(discussion.toString());
 
 				Platform.runLater(() -> filDiscussion.setText(discussion.toString()));
@@ -153,8 +161,6 @@ public class CommunicationController implements Initializable {
 			Message msgReceived = listener.receiveMessage(this.localUser);
 			Discussion discussion = this.userDiscLink.getUserMessageQueue(msgReceived.getEmetteur());
 			discussion.addMessage(msgReceived);
-
-			String msgText = msgReceived.getData();
 			Platform.runLater(() -> filDiscussion.setText(discussion.toString()));
 		}
 	}
@@ -178,5 +184,9 @@ public class CommunicationController implements Initializable {
 
 	public void setUserDiscussionLink(UserDiscussionLink userDiscussionLink) {
 		this.userDiscLink = userDiscussionLink;
+	}
+	
+	public void putNameinField(User givenUser){
+		welcomeField.setText("Welcome to CHAT : " + givenUser.getPseudo());
 	}
 }

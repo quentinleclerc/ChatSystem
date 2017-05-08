@@ -81,7 +81,15 @@ public class MainView extends Application {
             stage.setScene(scene);
 
             CommunicationController controller = loader.getController();
-            User localUser = new User(username, InetAddress.getByName("127.0.0.1"), Integer.parseInt(port), User.typeConnect.CONNECTED);
+
+            int portParsed;
+            try {
+                portParsed = Integer.parseInt(port);
+            } catch (NumberFormatException  e) {
+                portParsed = 0;
+            }
+
+            User localUser = new User(username, InetAddress.getByName("127.0.0.1"), portParsed, User.typeConnect.CONNECTED);
             UserDiscussionLink discussionLink = new UserDiscussionLink(localUser);
             controller.setModel(this.userList);
             controller.setPrevStage(stage);
@@ -91,8 +99,6 @@ public class MainView extends Application {
             multiControl.setUserDiscLink(discussionLink);
             controller.setMultiControl(multiControl);
             controller.setUserDiscussionLink(discussionLink);
-            controller.putNameinField(localUser);
-
 
             (new Thread(){
                 public void run() {

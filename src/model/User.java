@@ -115,6 +115,9 @@ public class User implements Serializable {
 		this.etat = etat;
 	}
 
+	public void setPort(int port) {
+		this.port = port;
+	}
 
 	@Override
 	public boolean equals(Object o) {

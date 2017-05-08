@@ -13,9 +13,9 @@ public class MulticastController {
     // Adress used for the multicast communication
     private static final String ADR = "225.1.2.3";
     // Port used for the multicast communication
-    private static final int PORT = 6789;
+    private static final int PORT = 5002;
     // Sleep time between each message send on the channel
-    private static final int SLEEP_TIME = 5000;
+    private static final int SLEEP_TIME = 3000;
 
     // Instance of MulticastReceiver
     private MulticastReceiver mReceiver;

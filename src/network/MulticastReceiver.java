@@ -1,6 +1,7 @@
 package network;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import model.User;
 import model.UserDiscussionLink;
 import model.UserList;
@@ -72,12 +73,16 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
 
         if (userState == User.typeConnect.CONNECTED) {
             if (users.contains(userReceived)) {
-            	User userInList = users.findUser(userReceived.getPseudo(), userReceived.getIP());
-            	if (!userReceived.getStatut().equals(userInList.getStatut()) ) {
+                ObservableList<User> usersObs;
+                int indexUserReceived = users.indexOf(userReceived);
+                User userInList = users.getUser(indexUserReceived);
+
+            	if (!userReceived.getStatut().equals(users.getUser(indexUserReceived).getStatut()) ) {
                     System.out.println("User already in connected users list BUT his pseudo has changed");
-            		System.out.println("OLD STATUT " + userReceived.getStatut() + " vs NEW STATUT" + userInList.getStatut());
-                	users.replace(userReceived, userReceived);
-            	} else {
+            		System.out.println("NEW STATUT " + userReceived.getStatut() + " vs OLD STATUT" + userInList.getStatut());
+                    users.replace(userInList, userReceived);
+                    System.out.println(users.getUsers());
+                } else {
                 	System.out.println("User already in connected users list");
             	}
             	

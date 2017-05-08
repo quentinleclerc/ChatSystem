@@ -2,6 +2,9 @@ package controller;
 
 import javafx.application.Platform;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +25,8 @@ public class CommunicationController implements Initializable {
 	@FXML
 	Text welcomeField;
 	@FXML
+	Text localInfo;
+	@FXML
 	ListView<User> listViewUser;
 	@FXML
 	Button disconnect;
@@ -30,13 +35,15 @@ public class CommunicationController implements Initializable {
 	@FXML
 	TextField messageToSend;
 	@FXML
-	TextField recipientField;
+	Text recipientField;
 	@FXML
 	TextField status;
 	@FXML
-	TextField otherStatus;
+	Text otherStatus;
 	@FXML
 	TextArea filDiscussion;
+	@FXML
+	private Button update;
 
 	private CommunicationControllerListener listener;
 
@@ -52,6 +59,7 @@ public class CommunicationController implements Initializable {
 	private MulticastController multiControl;
 
 	private UserDiscussionLink userDiscLink;
+
 
 	public CommunicationController() {
 		System.out.println("Communication Controller initialized.");
@@ -85,12 +93,8 @@ public class CommunicationController implements Initializable {
 			if(newSelection != null) {
 				send.setDisable(false);
 				recipientField.setText(newSelection.getPseudo());
-				
-				if(!getSelectedRecipient().getStatut().equals("")){
-					otherStatus.setText("[" + newSelection.getPseudo() + "] status : " + newSelection.getStatut());
-				} else{
-					otherStatus.setText("No status for " + newSelection.getPseudo());
-				}
+				otherStatus.setText(newSelection.getStatut());
+				System.out.println("######## "+ newSelection);
 
 				Discussion discussion = this.userDiscLink.getUserMessageQueue(newSelection);
 				System.out.println(discussion.toString());
@@ -145,8 +149,15 @@ public class CommunicationController implements Initializable {
 	public void onStatusEnter(KeyEvent ke){
 		if(ke.getCode().equals(KeyCode.ENTER)){
 			localUser.setStatut(status.getText());
+			localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
 			listViewUser.requestFocus();
 		}
+	}
+
+	@FXML
+	public void onUpdateClicked(MouseEvent event) {
+		localUser.setStatut(status.getText());
+		localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
 	}
 
 
@@ -167,6 +178,7 @@ public class CommunicationController implements Initializable {
 
 	public void setLocalUser(User localUser) {
 		this.localUser = localUser;
+		localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
 	}
 
 	public void setMainView(MainView mainView) {
@@ -185,8 +197,5 @@ public class CommunicationController implements Initializable {
 	public void setUserDiscussionLink(UserDiscussionLink userDiscussionLink) {
 		this.userDiscLink = userDiscussionLink;
 	}
-	
-	public void putNameinField(User givenUser){
-		welcomeField.setText("Welcome to CHAT : " + givenUser.getPseudo());
-	}
+
 }

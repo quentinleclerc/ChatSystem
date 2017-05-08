@@ -1,6 +1,7 @@
 package controller;
 
 
+import com.sun.corba.se.spi.activation.Server;
 import model.Message;
 import model.User;
 
@@ -44,6 +45,7 @@ public class LazyCommunicationControllerListener implements CommunicationControl
         Message msg = null;
         try {
             ServerSocket socket = new ServerSocket(localUser.getPort());
+            localUser.setPort(socket.getLocalPort());
             Socket socketDist = socket.accept();
             ObjectInputStream ois = new ObjectInputStream(socketDist.getInputStream());
 

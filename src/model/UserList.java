@@ -4,6 +4,7 @@ package model;
 import java.net.InetAddress;
 import java.util.*;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -51,6 +52,12 @@ public class UserList {
     	int i = users.indexOf(oldUsr);
     	users.remove(i);
     	users.add(i, newUser);
+
+        int j = obsUsersList.indexOf(oldUsr);
+        Platform.runLater(() -> {
+            obsUsersList.remove(j);
+            obsUsersList.add(j, newUser);
+        });
     }
     
     public int indexOf(User user) {
@@ -80,6 +87,10 @@ public class UserList {
 
     public ObservableList<User> getObsUsersList() {
         return obsUsersList;
+    }
+
+    public List<User> getUsers() {
+        return this.users;
     }
 
 }

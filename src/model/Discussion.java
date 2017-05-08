@@ -34,9 +34,9 @@ public class Discussion {
         while (listIterator.hasNext()) {
 			Message message = listIterator.next();
 			if(message.getEmetteur().equals(localUser))
-				str += "[Moi]" + message.getData() + "\n";
+				str += "[Moi] " + message.getData() + "\n";
 			else
-				str += "["+ message.getEmetteur().getPseudo() +"]" + message.getData() + "\n";
+				str += "["+ message.getEmetteur().getPseudo() +"] " + message.getData() + "\n";
 		}
 		return str;
     }

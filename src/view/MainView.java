@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import network.IpGetter;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -89,7 +90,11 @@ public class MainView extends Application {
                 portParsed = 0;
             }
 
-            User localUser = new User(username, InetAddress.getByName("127.0.0.1"), portParsed, User.typeConnect.CONNECTED);
+            IpGetter ipgetter = new IpGetter();
+            System.out.println(ipgetter.getIP());
+
+
+            User localUser = new User(username, ipgetter.getIP()/*InetAddress.getByName("127.0.0.1")*/, portParsed, User.typeConnect.CONNECTED);
             UserDiscussionLink discussionLink = new UserDiscussionLink(localUser);
             controller.setModel(this.userList);
             controller.setPrevStage(stage);

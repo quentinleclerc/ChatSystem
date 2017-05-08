@@ -23,12 +23,12 @@ public class MulticastController {
     private Thread multiSenderThread;
     private Thread multiReceiverThread;
 
-    private ObservableList model;
+    private ObservableList<User> model;
 
     private UserDiscussionLink userDiscLink;
 
 
-    public MulticastController(ObservableList model) {
+    public MulticastController(ObservableList<User> model) {
         this.model = model;
         System.out.println("MulticastController initialized.");
     }

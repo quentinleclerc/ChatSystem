@@ -20,16 +20,16 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
     // multicast group adress where the message is received
     private InetAddress INET_ADDR;
     // port to receive
-    private int PORT;
+    //private int PORT;
     // MultiCast socket used to receive message
     private MulticastSocket socket;
     // List of received users
-    private ObservableList users;
+    private ObservableList<User> users;
 
 
-    public MulticastReceiver(String adr, int port, ObservableList userList, UserDiscussionLink userDiscLink) throws IOException {
+    public MulticastReceiver(String adr, int port, ObservableList<User> userList, UserDiscussionLink userDiscLink) throws IOException {
         this.INET_ADDR = InetAddress.getByName(adr);
-        this.PORT = port;
+       // this.PORT = port;
         this.socket = new MulticastSocket(port);
         this.users = userList;
         this.userDiscLink = userDiscLink;

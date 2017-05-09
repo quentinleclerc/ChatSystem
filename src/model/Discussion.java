@@ -3,7 +3,11 @@ package model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import communication.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
+
+
+/*
+    This class is not used anymore for the project. However some methods have been tested in the test package.
+ */
 
 public class Discussion {
 
@@ -13,22 +17,14 @@ public class Discussion {
 
     public Discussion(User localUser) {
         this.localUser = localUser;
-        this.discussion = new ArrayList<Message>();
-    }
-
-    public ArrayList getDiscussion(){
-        return discussion;
+        this.discussion = new ArrayList<>();
     }
 
     public Boolean addMessage(Message msg) {
         return discussion.add(msg);
     }
-    
-    public boolean addMessage(String msg, User emetteur){
-    	Message message = new Message(msg, emetteur);
-    	return discussion.add(message);
-    }
-  
+
+    @Override
     public String toString(){
     	String str = "";
 	    Iterator<Message> listIterator = discussion.iterator();

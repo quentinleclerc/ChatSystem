@@ -1,4 +1,4 @@
-package controller;
+package network;
 
 import communication.Message;
 import communication.User;
@@ -10,10 +10,7 @@ import java.net.Socket;
 public class MessageSender {
 
     public void sendMessage(Message msg, User selectedRecipient) {
-        System.out.println(msg + " to " + selectedRecipient);
-
         try {
-            System.out.println(selectedRecipient.getIP().toString() + selectedRecipient.getPort());
             Socket socket = new Socket(selectedRecipient.getIP(), selectedRecipient.getPort());
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -27,5 +24,4 @@ public class MessageSender {
             e.printStackTrace();
         }
     }
-
 }

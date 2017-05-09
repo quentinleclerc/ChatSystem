@@ -1,10 +1,12 @@
 package controller;
 
 import communication.*;
-import javafx.collections.ObservableList;
+
 import model.UserDiscussionLink;
 import network.MulticastReceiver;
 import network.MulticastSender;
+
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 
@@ -17,11 +19,10 @@ public class MulticastController {
     // Sleep time between each message send on the channel
     private static final int SLEEP_TIME = 3000;
 
-    // Instance of MulticastReceiver
+    // Instance of MulticastReceiver used to interrupt the thread
     private MulticastReceiver mReceiver;
-    // Threads used to start and stop the emission/reception of data on the channel
+    // Instance of MulticastSender thread used to interrupt it
     private Thread multiSenderThread;
-    private Thread multiReceiverThread;
 
     private ObservableList<User> model;
 
@@ -33,16 +34,17 @@ public class MulticastController {
         System.out.println("MulticastController initialized.");
     }
 
+    public void setUserDiscLink(UserDiscussionLink userDiscLink) {
+        this.userDiscLink = userDiscLink;
+    }
+
     public void startAll(User localUser) {
         try {
-            System.out.println("Main controller creating a thread for MulticastServer...");
-
             multiSenderThread = new Thread(new MulticastSender(ADR, PORT, SLEEP_TIME, localUser));
             multiSenderThread.start();
 
-            System.out.println("Main controller creating a thread for MulticastClient...");
-            multiReceiverThread = new Thread(mReceiver = new MulticastReceiver(ADR, PORT, model, userDiscLink));
-
+            mReceiver = new MulticastReceiver(ADR, PORT, model, userDiscLink);
+            Thread multiReceiverThread = new Thread(mReceiver);
             multiReceiverThread.start();
         }
         catch (Exception e) {
@@ -55,12 +57,7 @@ public class MulticastController {
             mReceiver.close();
         } catch (IOException e) {
             e.printStackTrace();
-            multiReceiverThread.interrupt();
         }
         multiSenderThread.interrupt();
-    }
-
-    public void setUserDiscLink(UserDiscussionLink userDiscLink) {
-        this.userDiscLink = userDiscLink;
     }
 }

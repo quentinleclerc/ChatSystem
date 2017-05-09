@@ -28,7 +28,7 @@ public class BubbleText extends HBox {
     private Label displayedText;
     private SVGPath directionIndicator;
 
-    public BubbleText(String message, SpeechDirection direction){
+    BubbleText(String message, SpeechDirection direction){
         this.message = message;
         this.direction = direction;
         initialiseDefaults();
@@ -65,7 +65,7 @@ public class BubbleText extends HBox {
         directionIndicator.setFill(DEFAULT_SENDER_COLOR);
 
         HBox container = new HBox(displayedText, directionIndicator);
-        //Use at most 75% of the width provided to the SpeechBox for displaying the message
+
         container.maxWidthProperty().bind(widthProperty().multiply(0.75));
         getChildren().setAll(container);
         setAlignment(Pos.CENTER_RIGHT);
@@ -78,7 +78,7 @@ public class BubbleText extends HBox {
         directionIndicator.setFill(DEFAULT_RECEIVER_COLOR);
 
         HBox container = new HBox(directionIndicator, displayedText);
-        //Use at most 75% of the width provided to the SpeechBox for displaying the message
+
         container.maxWidthProperty().bind(widthProperty().multiply(0.75));
         getChildren().setAll(container);
         setAlignment(Pos.CENTER_LEFT);

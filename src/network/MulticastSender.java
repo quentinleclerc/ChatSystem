@@ -26,6 +26,8 @@ public class MulticastSender implements Runnable {
         this.PORT = port;
         this.socket = new DatagramSocket();
         this.myUser = user;
+        System.out.println("MulticastSender started");
+
     }
 
     public void run() {
@@ -38,7 +40,6 @@ public class MulticastSender implements Runnable {
         System.out.println("MulticastSender sending periodic model every " + this.SLEEP_TIME/1000 + " seconds");
         while (true) {
             sendUnique();
-            System.out.println("Sleep for : "+ SLEEP_TIME + "ms" );
             try {
                 sleep(SLEEP_TIME);
             }
@@ -63,7 +64,6 @@ public class MulticastSender implements Runnable {
             DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, INET_ADDR, PORT);
 
             socket.send(packet);
-            System.out.println("Sent a message to group "+ INET_ADDR + " : " + myUser);
 
             oos.close();
         }

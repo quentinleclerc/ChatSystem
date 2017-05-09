@@ -3,13 +3,20 @@
 This project is a P2P Chat System for communicating in a local network. It enables you to see every other persons connected to the Chat System and communicate with them.
 The project is implemented in Java 8.
 
+# Authors
+
+Quentin Leclerc (@quentinleclerc)
+Alexandre Hervier (@voilacti)
+
 # Requirements 
 
 Java 8 is required to compile this project.
 
 In order to use the Chat System you can either :
-- Compile manually all the sources, contained in the "src" folder. The "lib" folder contains every library used and needed to compile. The "resources" folder contains all the files needed to compile. You then need to execute the "Launch" class.
+- Compile manually all the sources, contained in the "src" folder. The "lib" folder contains every library used and needed to compile. The "resources" folder contains all the files needed to compile. You then need to execute the "MainApp" class.
 - Download and execute ChatSystem.jar.
+
+- Mac OS user may need to add -Djava.net.preferIPv4Stack=true to the VM options when compiling in order to enable multicast.
 
 # Functionalities 
 
@@ -39,3 +46,21 @@ Each Chat System instance :
 
 # Tests
 
+We principally tested model classes. We started with User and Message from the communication package in ChatSystemUtil.jar, these are the common classes used by every group.
+
+## User
+- We first tested the equals method. This test demonstrate if the method react well with null User for example.
+
+## Message
+- We started with getSender method, used ot obtain the sender from a message. The test is sucessful and correctly raise a NullPointerException when the sender is Null.
+- We also tested the equals method between 2 mesages also validating our tests.
+
+## Discussion
+
+At last minute we decided to change Discussion view. The Discussion class is the old class used to save discussions. Messages are now printed thanks to ConversationView class which is not respecting very well the MVC pattern. (last minute implementation). We let the Discussion class and its test into the src for you to see it.
+
+- The discussion is a Message queue, we tested adding User in the queue, adding Null User and printing a Message.
+
+## MulticastSender
+
+- We tried to send a disconnect message when the user click on disconnect button. The test was also sucessful

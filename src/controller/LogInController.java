@@ -1,16 +1,18 @@
 package controller;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.Initializable;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import view.MainView;
+import view.MainApp;
 import model.UserCredentialsRetriever;
 import model.UserCredentialsSaver;
 
@@ -28,14 +30,21 @@ public class LogInController implements Initializable {
     private Label userCorrectlyRegistered;
     @FXML
     private TextField port;
+    @FXML
+    private Button signUp;
+    @FXML
+    private Button signIn;
 
     private Stage prevStage;
+
     private UserCredentialsRetriever credentialsRetriever;
+
     private UserCredentialsSaver credentialSaver;
 
-    private MainView mainView;
+    private MainApp mainApp;
 
     private MulticastController multiControl;
+
   
     public LogInController(){
         System.out.println("LogIn Controller initialized.");
@@ -43,11 +52,6 @@ public class LogInController implements Initializable {
 
     public void setPrevStage(Stage stage){
         this.prevStage = stage;
-    }
-
-
-    public void setUsername(String username){
-        this.username.setText(username);
     }
 
     public void setCredentialsRetriever(UserCredentialsRetriever credentialsRetriever){
@@ -58,8 +62,8 @@ public class LogInController implements Initializable {
         this.credentialSaver = credentialSaver;
     }
   
-    public void setMainView(MainView mainView) {
-        this.mainView = mainView;
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
     }
 
     public void setMultiControl(MulticastController multiControl) {
@@ -68,6 +72,15 @@ public class LogInController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle rb) {
+        signIn.disableProperty().bind(
+                Bindings.isEmpty(username.textProperty())
+                        .or(Bindings.isEmpty(passwordField.textProperty()))
+                                );
+
+        signUp.disableProperty().bind(
+                Bindings.isEmpty(username.textProperty())
+                        .or(Bindings.isEmpty(passwordField.textProperty()))
+        );
     }
 
     @FXML
@@ -86,7 +99,7 @@ public class LogInController implements Initializable {
         String password = this.passwordField.getText();
 
         if (credentialsRetriever.checkPasswordCorrect(hashed, password)) {
-            this.mainView.showCommunicationView(this.prevStage, username.getText(), port.getText(), multiControl);
+            this.mainApp.showCommunicationView(this.prevStage, username.getText(), port.getText(), multiControl);
         }
         else {
             setVisible(incorrectPassword);

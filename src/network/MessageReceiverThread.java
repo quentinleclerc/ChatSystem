@@ -1,8 +1,9 @@
-package controller;
+package network;
 
 
 import communication.Message;
 import communication.User;
+import controller.CommunicationController;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,6 +20,10 @@ public class MessageReceiverThread implements Runnable, InterruptibleChannel {
 
     public MessageReceiverThread(User localUser) {
         this.localUser = localUser;
+    }
+
+    public void setComController(CommunicationController comController) {
+        this.comController = comController;
     }
 
     @Override
@@ -40,7 +45,7 @@ public class MessageReceiverThread implements Runnable, InterruptibleChannel {
         }
     }
 
-    public Message receiveMessage(User localUser) throws IOException {
+    private Message receiveMessage(User localUser) throws IOException {
         Message msg = null;
 
         try {
@@ -79,10 +84,5 @@ public class MessageReceiverThread implements Runnable, InterruptibleChannel {
     @Override
     public void close() throws IOException {
         socket.close();
-        System.out.println("Socket closed");
-    }
-
-    public void setComController(CommunicationController comController) {
-        this.comController = comController;
     }
 }

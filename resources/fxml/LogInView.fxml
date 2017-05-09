@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -40,8 +38,8 @@
            
        <HBox alignment="bottom_right" prefHeight="219.0" prefWidth="355.0" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
               <children>
-              <Button onAction="#onSignUp" prefHeight="43.0" prefWidth="105.0" text="Sign Up" />
-            <Button onAction="#onSignIn" prefHeight="43.0" prefWidth="105.0" text="Sign In" />
+              <Button fx:id="signUp" onAction="#onSignUp" prefHeight="43.0" prefWidth="105.0" text="Sign Up" />
+            <Button fx:id="signIn" onAction="#onSignIn" prefHeight="43.0" prefWidth="105.0" text="Sign In" />
 
               </children>
        </HBox> 

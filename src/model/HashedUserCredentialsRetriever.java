@@ -15,15 +15,12 @@ public class HashedUserCredentialsRetriever implements UserCredentialsRetriever 
     public String getHashedPassword(String username) {
         String result = "";
         ArrayList<String[]> users = readUsersPassword();
-        System.out.println("users.length :" + users.size());
-        System.out.println(users.toString());
 
         for (String[] user : users) {
             if (user[0].equals(username)) {
                 result = user[1];
             }
         }
-
         return result;
     }
 

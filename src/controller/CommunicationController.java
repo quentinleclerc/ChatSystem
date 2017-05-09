@@ -16,8 +16,9 @@ import javafx.fxml.Initializable;
 
 import model.*;
 
+import network.MessageSender;
 import view.ConversationView;
-import view.MainView;
+import view.MainApp;
 import view.BubbleText;
 
 import java.net.URL;
@@ -55,7 +56,7 @@ public class CommunicationController implements Initializable {
 
 	private User localUser;
 
-	private MainView mainView;
+	private MainApp mainApp;
 
 	private MulticastController multiControl;
 
@@ -65,15 +66,44 @@ public class CommunicationController implements Initializable {
 		System.out.println("Communication Controller initialized.");
 	}
 
+	public void setLocalUser(User localUser) {
+		this.localUser = localUser;
+		localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
+	}
+
+	public void setMainApp(MainApp mainApp) {
+		this.mainApp = mainApp;
+	}
+
+	public void setModel(ObservableList<User> model) {
+		this.model = model;
+		initModel();
+	}
+
+	public void setMultiControl(MulticastController multiControl) {
+		this.multiControl = multiControl;
+	}
+
+	public void setUserDiscussionLink(UserDiscussionLink userDiscussionLink) {
+		this.userDiscLink = userDiscussionLink;
+	}
+
+	public void setSender(MessageSender sender) {
+		this.sender = sender;
+	}
+
 	public void setPrevStage(Stage stage){
 		this.prevStage = stage;
+	}
+
+	private User getSelectedRecipient() {
+		return listViewUser.getSelectionModel().getSelectedItem();
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		send.setDisable(true);
 	}
-
 
 	private void initModel() {
 		listViewUser.setItems(model);
@@ -96,8 +126,6 @@ public class CommunicationController implements Initializable {
 
 				ConversationView discussion = this.userDiscLink.getUserMessageQueue(newSelection);
 
-				System.out.println(discussion.toString());
-
 				Platform.runLater(() -> {
 					vboxDiscussion.getChildren().clear();
 					vboxDiscussion.getChildren().add(discussion);
@@ -109,23 +137,7 @@ public class CommunicationController implements Initializable {
 	@FXML
 	public void onDisconnect(ActionEvent event) {
 		this.model.clear();
-		this.mainView.showLoginView(this.prevStage, false, multiControl);
-	}
-
-	private User getSelectedRecipient() {
-		return listViewUser.getSelectionModel().getSelectedItem();
-	}
-
-	private void onSend(){
-		User selectedRecipient = getSelectedRecipient();
-		Message message = new Message(messageToSend.getText(), localUser);
-
-
-		ConversationView discussion = this.userDiscLink.getUserMessageQueue(selectedRecipient);
-		discussion.addMessage(message, BubbleText.SpeechDirection.RIGHT);
-
-		sender.sendMessage(message, selectedRecipient);
-		messageToSend.clear();
+		this.mainApp.showLoginView(this.prevStage, false, multiControl);
 	}
 
 	@FXML
@@ -137,13 +149,24 @@ public class CommunicationController implements Initializable {
 	public void onSendEnter(KeyEvent ke) {
 		if(ke.getCode().equals(KeyCode.ENTER) && getSelectedRecipient() != null){
 			this.onSend();
-			listViewUser.requestFocus();
 		}
+	}
+
+	private void onSend(){
+		User selectedRecipient = getSelectedRecipient();
+		Message message = new Message(messageToSend.getText(), localUser);
+
+		ConversationView discussion = this.userDiscLink.getUserMessageQueue(selectedRecipient);
+		Platform.runLater(() -> discussion.addMessage(message, BubbleText.SpeechDirection.RIGHT));
+
+		sender.sendMessage(message, selectedRecipient);
+		messageToSend.clear();
 	}
 
 	@FXML
 	public void onStatusClicked(MouseEvent event){
-		status.setText("");
+		status.setText(localUser.getStatut());
+		status.positionCaret(localUser.getStatut().length());
 	}
 
 	@FXML
@@ -151,7 +174,6 @@ public class CommunicationController implements Initializable {
 		if(ke.getCode().equals(KeyCode.ENTER)){
 			localUser.setStatut(status.getText());
 			localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
-			listViewUser.requestFocus();
 		}
 	}
 
@@ -159,32 +181,6 @@ public class CommunicationController implements Initializable {
 	public void onUpdateClicked(MouseEvent event) {
 		localUser.setStatut(status.getText());
 		localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
-	}
-
-	public void setLocalUser(User localUser) {
-		this.localUser = localUser;
-		localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
-	}
-
-	public void setMainView(MainView mainView) {
-		this.mainView = mainView;
-	}
-
-	public void setModel(ObservableList<User> model) {
-		this.model = model;
-		initModel();
-	}
-
-	public void setMultiControl(MulticastController multiControl) {
-		this.multiControl = multiControl;
-	}
-
-	public void setUserDiscussionLink(UserDiscussionLink userDiscussionLink) {
-		this.userDiscLink = userDiscussionLink;
-	}
-
-	public void setSender(MessageSender sender) {
-		this.sender = sender;
 	}
 
 	public void updateDiscussion(Message messageReceived) {

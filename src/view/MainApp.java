@@ -12,17 +12,16 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
-import javafx.scene.Group;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import network.IpGetter;
+import network.MessageReceiverThread;
+import network.MessageSender;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainView extends Application {
+public class MainApp extends Application {
  
     private static String LoginViewFXML = "/fxml/LogInView.fxml";
     private static String CommunicationViewFXML = "/fxml/CommunicationView.fxml";
@@ -31,29 +30,16 @@ public class MainView extends Application {
     private MessageReceiverThread receiver;
     private Thread receiverThread;
 
-    public MainView() {
+    public MainApp() {
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
         System.setProperty("java.net.preferIPv4Stack", "true");
-
         List<User > users = new ArrayList<>();
         userList = FXCollections.observableArrayList(users);
 
         MulticastController multiControl = new MulticastController(userList);
-
-        /* *****
-        Group root = new Group();
-        Scene scene = new Scene(root, 300, 250);
-        // 5 pixels space between child nodes
-        VBox vbox = new ConversationView();
-        // 1 pixel padding between child nodes only
-        root.getChildren().add(vbox);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        /* ****** */
 
         showLoginView(primaryStage, true, multiControl);
     }
@@ -67,18 +53,17 @@ public class MainView extends Application {
             Stage stage = new Stage();
             stage.setTitle("Login View");
             GridPane myPane;
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.LoginViewFXML));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(MainApp.LoginViewFXML));
             myPane = loader.load();
             Scene scene = new Scene(myPane);
             stage.setScene(scene);
 
             LogInController controller = loader.getController();
             controller.setPrevStage(stage);
-            controller.setMainView(this);
+            controller.setMainApp(this);
             controller.setMultiControl(multiControl);
             controller.setCredentialsRetriever(new HashedUserCredentialsRetriever());
             controller.setCredentialSaver(new HashedUserCredentialsSaver());
-
 
             if (!start) {
                 multiControl.stopAll();
@@ -103,14 +88,13 @@ public class MainView extends Application {
             Stage stage = new Stage();
             stage.setTitle("Communication View");
             GridPane myPane;
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(MainView.CommunicationViewFXML));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(MainApp.CommunicationViewFXML));
             myPane = loader.load();
             Scene scene = new Scene(myPane);
             stage.setScene(scene);
             stage.setMaximized(true);
 
             CommunicationController controller = loader.getController();
-
 
             int portParsed;
             try {
@@ -128,12 +112,12 @@ public class MainView extends Application {
             receiverThread = new Thread(receiver);
             receiverThread.start();
 
-            UserDiscussionLink discussionLink = new UserDiscussionLink(localUser);
+            UserDiscussionLink discussionLink = new UserDiscussionLink();
             controller.setModel(this.userList);
             controller.setPrevStage(stage);
             controller.setSender(new MessageSender());
             controller.setLocalUser(localUser);
-            controller.setMainView(this);
+            controller.setMainApp(this);
             multiControl.setUserDiscLink(discussionLink);
             controller.setMultiControl(multiControl);
             controller.setUserDiscussionLink(discussionLink);
@@ -144,9 +128,6 @@ public class MainView extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
-
 
 }

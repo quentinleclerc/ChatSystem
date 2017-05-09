@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -7,14 +8,14 @@ public class Discussion {
 
     private final User localUser;
 
-    private ConcurrentLinkedQueue<Message> discussion;
+    private ArrayList<Message> discussion;
 
     public Discussion(User localUser) {
         this.localUser = localUser;
-        this.discussion = new ConcurrentLinkedQueue<>();
+        this.discussion = new ArrayList<Message>();
     }
 
-    public ConcurrentLinkedQueue<Message> getDiscussion(){
+    public ArrayList getDiscussion(){
         return discussion;
     }
 

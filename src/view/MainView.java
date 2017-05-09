@@ -5,6 +5,8 @@ import controller.LazyCommunicationControllerListener;
 import controller.LogInController;
 import controller.MulticastController;
 
+import javafx.scene.Group;
+import javafx.scene.layout.VBox;
 import model.*;
 
 import javafx.application.Application;
@@ -33,6 +35,18 @@ public class MainView extends Application {
         System.setProperty("java.net.preferIPv4Stack", "true");
         userList = new UserList() ;
         multiControl = new MulticastController(userList);
+
+        /* *****
+        Group root = new Group();
+        Scene scene = new Scene(root, 300, 250);
+        // 5 pixels space between child nodes
+        VBox vbox = new ConversationView();
+        // 1 pixel padding between child nodes only
+        root.getChildren().add(vbox);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        /* ****** */
 
         showLoginView(primaryStage, true, multiControl);
     }
@@ -80,6 +94,7 @@ public class MainView extends Application {
             myPane = loader.load();
             Scene scene = new Scene(myPane);
             stage.setScene(scene);
+            stage.setMaximized(true);
 
             CommunicationController controller = loader.getController();
 

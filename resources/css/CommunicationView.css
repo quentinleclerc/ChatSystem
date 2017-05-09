@@ -1,0 +1,9 @@
+#messageToSend {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-background-insets: 0;
+    -fx-padding: 1 3 1 3;
+}
+
+.root{
+    -fx-background: rgb(255, 255, 255);
+}

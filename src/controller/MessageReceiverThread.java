@@ -33,8 +33,9 @@ public class MessageReceiverThread implements Runnable, InterruptibleChannel {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             if (receivedMessage != null) {
-                comController.updateDiscussion(receivedMessage, receivedMessage.getSender());
+                comController.updateDiscussion(receivedMessage);
             }
         }
     }
@@ -44,7 +45,7 @@ public class MessageReceiverThread implements Runnable, InterruptibleChannel {
 
         try {
             socket = new ServerSocket(localUser.getPort());
-            socket.setReuseAddress(true);
+            localUser.setPort(socket.getLocalPort());
         } catch (IOException e) {
             e.printStackTrace();
         }

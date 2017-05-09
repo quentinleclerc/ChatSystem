@@ -35,7 +35,7 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
 
     public MulticastReceiver(String adr, int port, ObservableList<User> userList, UserDiscussionLink userDiscLink) throws IOException {
         this.INET_ADDR = InetAddress.getByName(adr);
-       // this.PORT = port;
+        // this.PORT = port;
         this.socket = new MulticastSocket(port);
         this.users = userList;
         this.userDiscLink = userDiscLink;
@@ -78,23 +78,20 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
 
         if (userState == User.typeConnect.CONNECTED) {
             if (users.contains(userReceived)) {
-                ObservableList<User> usersObs;
                 int indexUserReceived = users.indexOf(userReceived);
-                User userInList = users.getUser(indexUserReceived);
+                User userInList = users.get(indexUserReceived);
 
-            	if (!userReceived.getStatut().equals(users.getUser(indexUserReceived).getStatut()) ) {
+            	if (!userReceived.getStatut().equals(users.get(indexUserReceived).getStatut()) ) {
                     System.out.println("User already in connected users list BUT his pseudo has changed");
             		System.out.println("NEW STATUT " + userReceived.getStatut() + " vs OLD STATUT" + userInList.getStatut());
-                    users.replace(userInList, userReceived);
-                    System.out.println(users.getUsers());
+                    users.set(indexUserReceived, userReceived);
+                    // users.replace(userInList, userReceived);
                 } else {
                 	System.out.println("User already in connected users list");
             	}
             	
             } else {
-                Platform.runLater(() -> {
-                    users.add(userReceived);
-                });
+                Platform.runLater(() -> users.add(userReceived));
                 this.userDiscLink.addDiscussion(userReceived);
                 System.out.println("User "+ userReceived.getPseudo() + " added to connected users list");
                 System.out.println("Creation of a discussion for the user " + userReceived.getPseudo());

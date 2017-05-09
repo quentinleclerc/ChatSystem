@@ -2,14 +2,12 @@ package controller;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -103,9 +101,7 @@ public class CommunicationController implements Initializable {
 				Platform.runLater(() -> {
 					vboxDiscussion.getChildren().clear();
 					vboxDiscussion.getChildren().add(discussion);
-
-				}
-				);
+				});
 			}
 		});
 	}
@@ -122,12 +118,13 @@ public class CommunicationController implements Initializable {
 
 	private void onSend(){
 		User selectedRecipient = getSelectedRecipient();
+		Message message = new Message(messageToSend.getText(), localUser);
+
 
 		ConversationView discussion = this.userDiscLink.getUserMessageQueue(selectedRecipient);
-		discussion.addMessage(new Message(message, localUser), BubbleText.SpeechDirection.RIGHT);
+		discussion.addMessage(message, BubbleText.SpeechDirection.RIGHT);
 
-		Message msg = new Message(messageToSend.getText(), localUser);
-		sender.sendMessage(msg, selectedRecipient);
+		sender.sendMessage(message, selectedRecipient);
 		messageToSend.clear();
 	}
 
@@ -188,5 +185,10 @@ public class CommunicationController implements Initializable {
 
 	public void setSender(MessageSender sender) {
 		this.sender = sender;
+	}
+
+	public void updateDiscussion(Message messageReceived) {
+		ConversationView conversationView = this.userDiscLink.getUserMessageQueue(messageReceived.getSender());
+		Platform.runLater(() -> conversationView.addMessage(messageReceived, BubbleText.SpeechDirection.LEFT));
 	}
 }

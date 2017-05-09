@@ -27,20 +27,21 @@ public class UserTest {
 		
 		//Test1 : 2 same instances
 		assertTrue("usr1 = usr1\n", usr1.equals(usr1));
-
 		//Test2 : 2 different but equal instances
 		assertTrue("usr1 = usr2\n", usr1.equals(usr2));
-
 		//Test3 : 2 completely different instances
 		assertTrue("usr1 != usr3\n", !usr1.equals(usr3));
-
 		//Test4 : An instance not equivalent to null
 		assertTrue("usr1 != usr4, with usr4 = null\n", !usr1.equals(usr4));
-
+		
+	}
+	
+	@SuppressWarnings("null")
+	@Test (expected =NullPointerException.class)
+	public void testEqualsNullexception() {
 		//Test : 5 nullPointerException
-		//assertTrue("usr4 = null; NullPointerException raised\n", !usr1.equals(usr2));
-		
-		
+		User usr4 = null;
+		assertTrue("usr4 = null; NullPointerException raised\n", usr4.equals(null));
 	}
 
 }

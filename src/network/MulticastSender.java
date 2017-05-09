@@ -72,7 +72,7 @@ public class MulticastSender implements Runnable {
         }
     }
 
-    private void sendDisconnect() {
+    public void sendDisconnect() {
         myUser.setEtat(User.typeConnect.DECONNECTED);
         sendUnique();
     }

@@ -5,11 +5,15 @@ import network.MulticastReceiver;
 
 import org.junit.Test;
 
+import model.UserDiscussionLink;
+
 public class MulticastReceiverTest {
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void treatUserTest() {
+		
 	}
+	
+	
 
 }

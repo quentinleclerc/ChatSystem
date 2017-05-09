@@ -5,13 +5,17 @@ import controller.*;
 import communication.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import model.*;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.Group;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import network.IpGetter;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -38,6 +42,18 @@ public class MainView extends Application {
         userList = FXCollections.observableArrayList(users);
 
         MulticastController multiControl = new MulticastController(userList);
+
+        /* *****
+        Group root = new Group();
+        Scene scene = new Scene(root, 300, 250);
+        // 5 pixels space between child nodes
+        VBox vbox = new ConversationView();
+        // 1 pixel padding between child nodes only
+        root.getChildren().add(vbox);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        /* ****** */
 
         showLoginView(primaryStage, true, multiControl);
     }
@@ -91,10 +107,21 @@ public class MainView extends Application {
             myPane = loader.load();
             Scene scene = new Scene(myPane);
             stage.setScene(scene);
+            stage.setMaximized(true);
 
             CommunicationController controller = loader.getController();
 
-            User localUser = new User(username, InetAddress.getByName("127.0.0.1"), Integer.parseInt(port), User.typeConnect.CONNECTED);
+
+            int portParsed;
+            try {
+                portParsed = Integer.parseInt(port);
+            } catch (NumberFormatException  e) {
+                portParsed = 0;
+            }
+
+            IpGetter ipgetter = new IpGetter();
+
+            User localUser = new User(username, ipgetter.getIP(), portParsed, User.typeConnect.CONNECTED);
 
             receiver = new MessageReceiverThread(localUser);
             receiver.setComController(controller);

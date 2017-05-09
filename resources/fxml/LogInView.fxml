@@ -36,7 +36,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-           <TextField fx:id="port" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="48.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+           <TextField fx:id="port" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="48.0" prefWidth="300.0" promptText="Optionnal" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
            
        <HBox alignment="bottom_right" prefHeight="219.0" prefWidth="355.0" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
               <children>

@@ -1,22 +1,25 @@
 package model;
 
+
+import view.ConversationView;
 import communication.*;
+
 import java.util.Hashtable;
 
 public class UserDiscussionLink {
 	
-	private Hashtable<User, Discussion> userMessages;
+	private Hashtable<User, ConversationView> userMessages;
 	
 	private User localUser;
 
 	public UserDiscussionLink(User localUser){
 		this.localUser = localUser;
-		userMessages = new Hashtable<User, Discussion>();
+		userMessages = new Hashtable<User, ConversationView>();
 	}
 	
 	public void addDiscussion(User usr){
 		if(!userMessages.containsKey(usr)){
-			userMessages.put(usr, new Discussion(localUser));
+			userMessages.put(usr, new ConversationView());
 		}
 	}
 	
@@ -28,7 +31,7 @@ public class UserDiscussionLink {
 		userMessages.remove(usr);
 	}
 	
-	public synchronized Discussion getUserMessageQueue(User usr){
+	public synchronized ConversationView getUserMessageQueue(User usr){
 		//return null if the user is not in the HashMap
 		return userMessages.get(usr);
 	}

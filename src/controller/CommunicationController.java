@@ -1,20 +1,26 @@
 package controller;
 
 import javafx.application.Platform;
-
 import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-
-import javafx.scene.control.*;
-
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.*;
-import view.MainView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
+
+import model.*;
+
+import view.ConversationView;
+import view.MainView;
+import view.BubbleText;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,7 +28,10 @@ import java.util.ResourceBundle;
 import communication.*;
 
 public class CommunicationController implements Initializable {
-
+	@FXML
+	Text welcomeField;
+	@FXML
+	Text localInfo;
 	@FXML
 	ListView<User> listViewUser;
 	@FXML
@@ -32,11 +41,13 @@ public class CommunicationController implements Initializable {
 	@FXML
 	TextField messageToSend;
 	@FXML
-	TextField recipientField;
+	Text recipientField;
 	@FXML
 	TextField status;
 	@FXML
-	TextArea filDiscussion;
+	Button update;
+	@FXML
+	VBox vboxDiscussion;
 
 	private MessageSender sender;
 
@@ -83,13 +94,18 @@ public class CommunicationController implements Initializable {
 		listViewUser.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if(newSelection != null) {
 				send.setDisable(false);
-				recipientField.setText(newSelection.getPseudo());
-				System.out.println(newSelection);
+				recipientField.setText(newSelection.getPseudo() + ". " + newSelection.getStatut());
 
-				Discussion discussion = this.userDiscLink.getUserMessageQueue(getSelectedRecipient());
+				ConversationView discussion = this.userDiscLink.getUserMessageQueue(newSelection);
+
 				System.out.println(discussion.toString());
 
-				Platform.runLater(() -> filDiscussion.setText(discussion.toString()));
+				Platform.runLater(() -> {
+					vboxDiscussion.getChildren().clear();
+					vboxDiscussion.getChildren().add(discussion);
+
+				}
+				);
 			}
 		});
 	}
@@ -106,11 +122,13 @@ public class CommunicationController implements Initializable {
 
 	private void onSend(){
 		User selectedRecipient = getSelectedRecipient();
-		Message msg = new Message(messageToSend.getText(), localUser);
 
+		ConversationView discussion = this.userDiscLink.getUserMessageQueue(selectedRecipient);
+		discussion.addMessage(new Message(message, localUser), BubbleText.SpeechDirection.RIGHT);
+
+		Message msg = new Message(messageToSend.getText(), localUser);
 		sender.sendMessage(msg, selectedRecipient);
 		messageToSend.clear();
-		updateDiscussion(msg, selectedRecipient);
 	}
 
 	@FXML
@@ -135,19 +153,20 @@ public class CommunicationController implements Initializable {
 	public void onStatusEnter(KeyEvent ke){
 		if(ke.getCode().equals(KeyCode.ENTER)){
 			localUser.setStatut(status.getText());
+			localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
 			listViewUser.requestFocus();
 		}
 	}
 
-	public void updateDiscussion(Message msg, User recipient) {
-		Discussion discussion = this.userDiscLink.getUserMessageQueue(recipient);
-		discussion.addMessage(msg);
-		Platform.runLater(() -> filDiscussion.setText(discussion.toString()));
-
+	@FXML
+	public void onUpdateClicked(MouseEvent event) {
+		localUser.setStatut(status.getText());
+		localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
 	}
 
 	public void setLocalUser(User localUser) {
 		this.localUser = localUser;
+		localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
 	}
 
 	public void setMainView(MainView mainView) {

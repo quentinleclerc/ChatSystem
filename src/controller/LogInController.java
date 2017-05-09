@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.fxml.Initializable;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import view.MainView;
-
 import model.UserCredentialsRetriever;
 import model.UserCredentialsSaver;
 

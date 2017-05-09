@@ -1,5 +1,3 @@
-
-
 import view.MainView;
 
 public class Launch {

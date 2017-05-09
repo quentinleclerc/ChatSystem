@@ -29,7 +29,13 @@ public class HashedUserCredentialsRetriever implements UserCredentialsRetriever 
 
     @Override
     public boolean checkPasswordCorrect(String hashed, String password) {
-        return BCrypt.checkpw(password, hashed);
+        boolean passwordOK = false;
+        try {
+            passwordOK = BCrypt.checkpw(password, hashed);
+        } catch (IndexOutOfBoundsException ide) {
+            System.out.println("User not found in database");
+        }
+        return passwordOK;
     }
 
     @Override
@@ -42,7 +48,6 @@ public class HashedUserCredentialsRetriever implements UserCredentialsRetriever 
                 result = true;
             }
         }
-
         return result;
     }
 

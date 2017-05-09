@@ -1,8 +1,8 @@
 package controller;
 
-import model.User;
+import communication.*;
+import javafx.collections.ObservableList;
 import model.UserDiscussionLink;
-import model.UserList;
 import network.MulticastReceiver;
 import network.MulticastSender;
 
@@ -23,12 +23,12 @@ public class MulticastController {
     private Thread multiSenderThread;
     private Thread multiReceiverThread;
 
-    private UserList model;
+    private ObservableList<User> model;
 
     private UserDiscussionLink userDiscLink;
 
 
-    public MulticastController(UserList model) {
+    public MulticastController(ObservableList<User> model) {
         this.model = model;
         System.out.println("MulticastController initialized.");
     }
@@ -56,7 +56,6 @@ public class MulticastController {
         } catch (IOException e) {
             e.printStackTrace();
             multiReceiverThread.interrupt();
-
         }
         multiSenderThread.interrupt();
     }

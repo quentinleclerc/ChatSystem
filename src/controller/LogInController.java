@@ -7,20 +7,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import view.MainView;
 
 import model.UserCredentialsRetriever;
 import model.UserCredentialsSaver;
-
-import org.mindrot.jbcrypt.BCrypt;
 
 public class LogInController implements Initializable {
 
@@ -94,9 +88,6 @@ public class LogInController implements Initializable {
         String password = this.passwordField.getText();
 
         if (credentialsRetriever.checkPasswordCorrect(hashed, password)) {
-            System.out.println(this.prevStage);
-            System.out.println(username.getText());
-            System.out.println(port.getText());
             this.mainView.showCommunicationView(this.prevStage, username.getText(), port.getText(), multiControl);
         }
         else {

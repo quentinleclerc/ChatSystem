@@ -1,6 +1,6 @@
 package network;
 
-import model.User;
+import communication.*;
 import java.io.*;
 import java.net.*;
 import static java.lang.Thread.sleep;
@@ -45,7 +45,6 @@ public class MulticastSender implements Runnable {
             catch (InterruptedException e) {
                 System.out.println("Interrupted exception caught in sender");
                 sendDisconnect();
-                //Thread.currentThread().interrupt();
                 break;
             }
         }
@@ -73,7 +72,7 @@ public class MulticastSender implements Runnable {
         }
     }
 
-    private void sendDisconnect() {
+    public void sendDisconnect() {
         myUser.setEtat(User.typeConnect.DECONNECTED);
         sendUnique();
     }

@@ -1,31 +1,35 @@
 package view;
 
-import controller.CommunicationController;
-import controller.LazyCommunicationControllerListener;
-import controller.LogInController;
-import controller.MulticastController;
+import controller.*;
 
-import javafx.scene.Group;
-import javafx.scene.layout.VBox;
+import communication.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import model.*;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.Group;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import network.IpGetter;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainView extends Application {
  
     private static String LoginViewFXML = "/fxml/LogInView.fxml";
     private static String CommunicationViewFXML = "/fxml/CommunicationView.fxml";
 
-    private UserList userList;
-    private MulticastController multiControl;
+    private ObservableList<User> userList;
+    private MessageReceiverThread receiver;
+    private Thread receiverThread;
 
     public MainView() {
     }
@@ -33,8 +37,11 @@ public class MainView extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         System.setProperty("java.net.preferIPv4Stack", "true");
-        userList = new UserList() ;
-        multiControl = new MulticastController(userList);
+
+        List<User > users = new ArrayList<>();
+        userList = FXCollections.observableArrayList(users);
+
+        MulticastController multiControl = new MulticastController(userList);
 
         /* *****
         Group root = new Group();
@@ -74,8 +81,14 @@ public class MainView extends Application {
 
 
             if (!start) {
-                prevStage.close();
                 multiControl.stopAll();
+                try {
+                    receiver.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    receiverThread.interrupt();
+                }
+                prevStage.close();
             }
 
             stage.show();
@@ -98,6 +111,7 @@ public class MainView extends Application {
 
             CommunicationController controller = loader.getController();
 
+
             int portParsed;
             try {
                 portParsed = Integer.parseInt(port);
@@ -106,25 +120,23 @@ public class MainView extends Application {
             }
 
             IpGetter ipgetter = new IpGetter();
-            System.out.println(ipgetter.getIP());
 
+            User localUser = new User(username, ipgetter.getIP(), portParsed, User.typeConnect.CONNECTED);
 
-            User localUser = new User(username, ipgetter.getIP()/*InetAddress.getByName("127.0.0.1")*/, portParsed, User.typeConnect.CONNECTED);
+            receiver = new MessageReceiverThread(localUser);
+            receiver.setComController(controller);
+            receiverThread = new Thread(receiver);
+            receiverThread.start();
+
             UserDiscussionLink discussionLink = new UserDiscussionLink(localUser);
             controller.setModel(this.userList);
             controller.setPrevStage(stage);
-            controller.setListener(new LazyCommunicationControllerListener() );
+            controller.setSender(new MessageSender());
             controller.setLocalUser(localUser);
             controller.setMainView(this);
             multiControl.setUserDiscLink(discussionLink);
             controller.setMultiControl(multiControl);
             controller.setUserDiscussionLink(discussionLink);
-
-            (new Thread(){
-                public void run() {
-                    controller.enableReception();
-                }
-            }).start();
 
             prevStage.close();
             stage.show();

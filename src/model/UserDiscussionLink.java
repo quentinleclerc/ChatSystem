@@ -1,6 +1,8 @@
 package model;
 
+
 import view.ConversationView;
+import communication.*;
 
 import java.util.Hashtable;
 

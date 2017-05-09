@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import communication.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Discussion {
@@ -38,6 +39,7 @@ public class Discussion {
 				str += "[Moi] " + message.getData() + "\n";
 			else
 				str += "["+ message.getEmetteur().getPseudo() +"] " + message.getData() + "\n";
+
 		}
 		return str;
     }

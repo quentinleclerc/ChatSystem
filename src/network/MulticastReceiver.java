@@ -1,19 +1,24 @@
 package network;
 
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import model.User;
+
+import communication.*;
+
 import model.UserDiscussionLink;
-import model.UserList;
 
 import java.io.*;
+
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
+
 import java.nio.channels.InterruptibleChannel;
+
 import java.util.Observable;
 import java.util.Observer;
+
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 
 public class MulticastReceiver implements Runnable, Observer, InterruptibleChannel {
 
@@ -21,16 +26,16 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
     // multicast group adress where the message is received
     private InetAddress INET_ADDR;
     // port to receive
-    private int PORT;
+    //private int PORT;
     // MultiCast socket used to receive message
     private MulticastSocket socket;
     // List of received users
-    private UserList users;
+    private ObservableList<User> users;
 
 
-    public MulticastReceiver(String adr, int port, UserList userList, UserDiscussionLink userDiscLink) throws IOException {
+    public MulticastReceiver(String adr, int port, ObservableList<User> userList, UserDiscussionLink userDiscLink) throws IOException {
         this.INET_ADDR = InetAddress.getByName(adr);
-        this.PORT = port;
+       // this.PORT = port;
         this.socket = new MulticastSocket(port);
         this.users = userList;
         this.userDiscLink = userDiscLink;
@@ -56,7 +61,7 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
                 System.out.println("User received : " + userReceived);
             }
             catch (SocketException se) {
-                System.out.println("Interrupted exception caught in receiver");
+                System.out.println("Socket exception caught in receiver");
                 Thread.currentThread().interrupt();
                 break;
             }
@@ -96,12 +101,9 @@ public class MulticastReceiver implements Runnable, Observer, InterruptibleChann
             }
         }
         else {
-            int indexUser;
             if (users.contains(userReceived)) {
-                indexUser = users.indexOf(userReceived);
-
                 Platform.runLater(() -> {
-                    users.remove(indexUser);
+                    users.remove(userReceived);
                 }) ;
 
                 System.out.println("User "+ userReceived + "successfully removed from connected users list");

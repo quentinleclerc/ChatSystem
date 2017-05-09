@@ -1,28 +1,31 @@
 package controller;
 
 import javafx.application.Platform;
-
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.control.*;
-
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.*;
-import view.ConversationView;
-import view.MainView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
+
+import model.*;
+
+import view.ConversationView;
+import view.MainView;
 import view.BubbleText;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import communication.*;
 
 public class CommunicationController implements Initializable {
 	@FXML
@@ -46,11 +49,11 @@ public class CommunicationController implements Initializable {
 	@FXML
 	VBox vboxDiscussion;
 
-	private CommunicationControllerListener listener;
+	private MessageSender sender;
 
 	private Stage prevStage;
 
-	protected UserList model;
+	protected ObservableList<User> model;
 
 	private User localUser;
 
@@ -75,7 +78,7 @@ public class CommunicationController implements Initializable {
 
 
 	private void initModel() {
-		listViewUser.setItems(model.getObsUsersList());
+		listViewUser.setItems(model);
 		listViewUser.setCellFactory((list) -> new ListCell<User>() {
 			@Override
 			protected void updateItem(User item, boolean empty) {
@@ -109,7 +112,7 @@ public class CommunicationController implements Initializable {
 
 	@FXML
 	public void onDisconnect(ActionEvent event) {
-		this.model.clearAll();
+		this.model.clear();
 		this.mainView.showLoginView(this.prevStage, false, multiControl);
 	}
 
@@ -118,16 +121,14 @@ public class CommunicationController implements Initializable {
 	}
 
 	private void onSend(){
-
-		String message = messageToSend.getText();
 		User selectedRecipient = getSelectedRecipient();
 
 		ConversationView discussion = this.userDiscLink.getUserMessageQueue(selectedRecipient);
 		discussion.addMessage(new Message(message, localUser), BubbleText.SpeechDirection.RIGHT);
 
-		listener.sendMessage(new Message(message, localUser), selectedRecipient);
+		Message msg = new Message(messageToSend.getText(), localUser);
+		sender.sendMessage(msg, selectedRecipient);
 		messageToSend.clear();
-
 	}
 
 	@FXML
@@ -163,22 +164,6 @@ public class CommunicationController implements Initializable {
 		localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
 	}
 
-
-	public void setListener(CommunicationControllerListener listener) {
-		System.out.println("Listener correctly set");
-		this.listener = listener;
-	}
-
-	public void enableReception() {
-
-		while(true){
-			Message msgReceived = listener.receiveMessage(this.localUser);
-			ConversationView conversationView = this.userDiscLink.getUserMessageQueue(msgReceived.getEmetteur());
-
-			Platform.runLater(() -> conversationView.addMessage(msgReceived, BubbleText.SpeechDirection.LEFT));
-		}
-	}
-
 	public void setLocalUser(User localUser) {
 		this.localUser = localUser;
 		localInfo.setText(localUser.getPseudo() + ". " + localUser.getStatut());
@@ -188,7 +173,7 @@ public class CommunicationController implements Initializable {
 		this.mainView = mainView;
 	}
 
-	public void setModel(UserList model) {
+	public void setModel(ObservableList<User> model) {
 		this.model = model;
 		initModel();
 	}
@@ -201,4 +186,7 @@ public class CommunicationController implements Initializable {
 		this.userDiscLink = userDiscussionLink;
 	}
 
+	public void setSender(MessageSender sender) {
+		this.sender = sender;
+	}
 }

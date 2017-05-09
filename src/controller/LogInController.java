@@ -86,9 +86,6 @@ public class LogInController implements Initializable {
         String password = this.passwordField.getText();
 
         if (credentialsRetriever.checkPasswordCorrect(hashed, password)) {
-            System.out.println(this.prevStage);
-            System.out.println(username.getText());
-            System.out.println(port.getText());
             this.mainView.showCommunicationView(this.prevStage, username.getText(), port.getText(), multiControl);
         }
         else {
